@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenSpace — Dzogchen Pointing-Out</title>
+  <style>
+    :root{--bg:#000;--fg:#fff;--muted:#6d6d6d;--card:#0f0f0f;--btn:#222;--btnHover:#333}
+    html,body{height:100%;margin:0}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color:var(--fg);
+      display:flex;align-items:center;justify-content:center;
+      position:relative;
+    }
+    #container{width:min(680px,92vw);padding:20px;text-align:center}
+    h2{margin:0 0 12px;font-weight:600}
+    #card{background:var(--card);padding:22px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.6); position:relative}
+    #content{min-height:86px;display:flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:8px;background:transparent;color:var(--fg);font-size:1rem;line-height:1.4;opacity:0;transition:opacity .5s ease}
+
+    .controls{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:18px}
+    button{background:var(--btn);color:var(--fg);border:none;padding:12px 16px;border-radius:10px;cursor:pointer;font-size:1.1rem;transition:opacity .15s,transform .12s}
+    button:hover:not(:disabled){background:var(--btnHover);transform:translateY(-1px)}
+    button:disabled{opacity:.28;cursor:default;background:#0a0a0a;color:var(--muted)}
+
+    #stepBtn{width:56px;height:56px;border-radius:10px;font-size:20px}
+    #cycleBtn{width:56px;height:56px;border-radius:10px;font-size:20px}
+    #anchorBtn{width:38px;height:34px;border-radius:8px;font-size:16px;padding:6px 8px}
+
+    #anchorArea{margin-top:12px;min-height:36px;display:flex;align-items:center;justify-content:center}
+    #anchorText{opacity:0;transition:opacity 15000ms ease;color:var(--muted);text-align:center;max-width:80%}
+
+    #infoBtn{position:absolute;bottom:10px;right:10px;background:none;color:var(--muted);border:none;font-size:18px;cursor:pointer;}
+
+    /* Modal styles */
+    #infoModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center}
+    #infoModalContent{background:var(--card);color:var(--fg);padding:20px;border-radius:12px;max-width:320px;max-height:80%;overflow-y:auto;position:relative;text-align:left}
+    #closeModal{position:absolute;top:8px;right:12px;font-size:18px;background:none;border:none;color:var(--muted);cursor:pointer}
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>OpenSpace — Dzogchen Pointing‑Out</h2>
+    <div id="card">
+      <div id="content">Click the left dot to begin.</div>
+
+      <div class="controls">
+        <button id="stepBtn" aria-label="Step">●</button>
+        <button id="cycleBtn" aria-label="Next Cycle" disabled>○</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div style="margin-top:10px;">
+          <button id="anchorBtn" aria-label="Anchor" disabled>⚓</button>
+        </div>
+        <div id="anchorArea"><div id="anchorText"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for info/help -->
+  <div id="infoModal">
+    <div id="infoModalContent">
+      <button id="closeModal">×</button>
+      <p>Left dot steps through the phase. When it finishes, the right dot advances the next iteration. Anchor available after the cycle completes.</p>
+      <p>Anchor quotes are drawn from recognized Dzogchen masters as pointers. They are traditional teachings presented as reminders, not guarantees, and are best understood with guidance from a qualified teacher.</p>
+    </div>
+  </div>
+
+  <button id="infoBtn" aria-label="Help">ℹ️</button>
+
+  <script>
+    const phenomena = ["Notice the next thought that appears.", "Notice the next emotion that surfaces.", "Notice any bodily sensation you can feel.", "Notice the first sound you hear right now.", "Notice a memory that comes to mind.", "Notice a fleeting image in your mind.", "Notice an impulse or urge that arises.", "Notice tension or relaxation in your body.", "Notice any taste, smell, or subtle sensation.", "Notice the feeling of your posture.", "Notice a judgment or evaluation as it arises.", "Notice any desire or aversion appearing.", "Notice a flicker of attention in your mind.", "Notice a pause, blank, or gap in thought.", "Notice the flow of breath without changing it.", "Notice a subtle feeling of comfort or discomfort.", "Notice curiosity arising in your awareness.", "Notice agitation or restlessness.", "Notice a fleeting visual impression in the environment.", "Notice an internal dialogue or narrative forming.", "Notice a small ache or ease in the body.", "Notice a passing preference or dislike.", "Notice the edges of your attention.", "Notice a faint mental image that appears.", "Notice the sound your clothes or chair makes.", "Notice a recent thought about the future.", "Notice the feeling behind a remembered word.", "Notice the subtle holding in your hands or fingers.", "Notice any urge to look away or avoid.", "Notice a gentle warmth or coolness in the skin."];
+
+    const spaceCues = ["Now notice the space in which that appears.", "Shift from the arising object to the openness it inhabits.", "Let the image soften; sense the formless ground hosting it.", "Notice the simple knowing that doesn't grab the content.", "Sense the ungraspable background where this shows up.", "Without changing anything, sense the openness that's aware.", "Notice how the appearance is simply occurring in this field.", "Feel the space that is present even when form is vivid.", "Note the clarity that notices without effort.", "Allow attention to rest in the open knowing around the object.", "Sense the nonreferential space behind the appearance.", "Notice that the space doesn't need the content to be itself.", "Notice the stillness that contains motion and thought.", "Sense how this shows up and shows itself without you doing anything.", "Let the background be known as background, not a new object."];
+
+    const revelationCues = ["This openness wasn't created just now.", "You didn't produce this space — it's already present.", "The object arose and passed; the knowing remained.", "The openness is unchanged by whatever appears.", "You cannot step outside this awareness — it's the ground of all.", "This seeing is not something you must assemble.", "Even when unnoticing occurs, it too arises in the same space.", "No addition is required for this to be present.", "This is not a state to obtain; it is what appears in all states.", "Recognize that nothing could be missing from this field."];
+
+    const restingCues = ["Rest here for a moment.", "Let everything be exactly as it is.", "No need to hold the view; notice it holds itself.", "There's nothing to maintain and nothing to lose.", "Simply remain in this effortless openness.", "Allow the moment to be as it is without doing.", "Stay with the felt sense of not having to fix anything.", "Breathe lightly and rest in what is aware."];
+
+    const anchorCues = [
+      "In Dzogchen we discover that the root of the mind is awareness or rigpa. This is our true condition. — Namkhai Norbu Rinpoche",
+      "When we recognize that the seemingly object nature of reality is nothing different than the subject nature of mind, which is rigpa, it is called enlightenment. — Dzogchen Ponlop Rinpoche",
+      "Whatever arises in the mind … just let it be, and it will naturally release itself. — Patrul Rinpoche",
+      "The nature of mind is Buddha from the very beginning. — Padmasambhava",
+      "This openness was not created just now. — Traditional Dzogchen teaching",
+      "Rest in natural great peace. — Traditional Dzogchen teaching"
+    ];
+
+    // Shuffle-without-repetition helper
+    function createShuffler(arr){
+      let pool = [...arr];
+      return function(){
+        if(pool.length === 0) pool = [...arr];
+        const idx = Math.floor(Math.random()*pool.length);
+        const item = pool[idx];
+        pool.splice(idx,1);
+        return item;
+      }
+    }
+
+    const pickPhenomena = createShuffler(phenomena);
+    const pickSpace = createShuffler(spaceCues);
+    const pickRevelation = createShuffler(revelationCues);
+    const pickResting = createShuffler(restingCues);
+    const pickAnchor = createShuffler(anchorCues);
+
+    let phase = 0; const maxPhase=4;
+    const elContent = document.getElementById('content');
+    const stepBtn = document.getElementById('stepBtn');
+    const cycleBtn = document.getElementById('cycleBtn');
+    const anchorBtn = document.getElementById('anchorBtn');
+    const anchorText = document.getElementById('anchorText');
+    const infoBtn = document.getElementById('infoBtn');
+    const infoModal = document.getElementById('infoModal');
+    const closeModal = document.getElementById('closeModal');
+
+    let anchorTimeout;
+
+    function fadeText(newText){
+      elContent.style.opacity='0';
+      setTimeout(()=>{
+        elContent.textContent=newText;
+        elContent.style.opacity='1';
+      },500);
+    }
+
+    function step(){
+      if(stepBtn.disabled) return;
+      let text='';
+      if(phase===0) text=pickPhenomena();
+      else if(phase===1) text=pickSpace();
+      else if(phase===2) text=pickRevelation();
+      else if(phase===3) text=pickResting();
+      fadeText(text);
+      phase++;
+      if(phase>=maxPhase){ stepBtn.disabled=true; cycleBtn.disabled=false; anchorBtn.disabled=false; }
+    }
+
+    function cycle(){
+      if(cycleBtn.disabled) return;
+      phase=0; cycleBtn.disabled=true; anchorBtn.disabled=true; stepBtn.disabled=false;
+      fadeText(pickPhenomena()); phase=1;
+    }
+
+    function showAnchor(){
+      if(anchorBtn.disabled) return;
+      anchorBtn.disabled=true;
+
+      if(anchorTimeout) clearTimeout(anchorTimeout);
+
+      anchorText.textContent = pickAnchor();
+      anchorText.style.opacity = '1';
+
+      anchorTimeout = setTimeout(()=>{
+        anchorText.style.opacity='0';
+        anchorTimeout = setTimeout(()=>{
+          anchorText.textContent='';
+          if(!cycleBtn.disabled) anchorBtn.disabled = false;
+        },15000);
+      },15000);
+    }
+
+    stepBtn.addEventListener('click',step);
+    cycleBtn.addEventListener('click',cycle);
+    anchorBtn.addEventListener('click',showAnchor);
+    infoBtn.addEventListener('click',()=>{ infoModal.style.display='flex'; });
+    closeModal.addEventListener('click',()=>{ infoModal.style.display='none'; });
+
+    stepBtn.disabled=false; cycleBtn.disabled=true; anchorBtn.disabled=true;
+  </script>
+</body>
+</html>
