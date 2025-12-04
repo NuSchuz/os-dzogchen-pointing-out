@@ -340,6 +340,7 @@
     <div id="menuBar">
       <button id="trekchoBtn">Trekchö Cutting-Through</button>
       <button id="mahaBtn">Mahamudra Pointing-Out</button>
+      <button id="dzPOBtn">Dzogchen Pointing-Out</button>
       <button id="dzogchenBtn">Dzogchen Freeform</button>
     </div>
 
@@ -630,6 +631,32 @@
       "This is Trekchö: relaxing completely into primordial purity, just as you are."
     ];
 
+    const dzogchenPOSteps = [
+  "Take one soft inhale and exhale. Let the breath settle into its own rhythm.",
+  "Let the gaze relax open — not focused, not unfocused, simply at ease.",
+  "Let attention rest wide, without narrowing on any object or sensation.",
+  "Notice awareness already present before you try to do anything.",
+  "Let effort soften. Openness is not produced — it is revealed.",
+  "Allow experiences to appear within awareness without pulling at them.",
+  "Look gently for the one who is aware and see that nothing solid is found.",
+  "Notice that the searcher is also just an appearance within awareness.",
+  "Rest in the openness that remains when you stop aiming attention.",
+  "Recognize that trying to look at awareness is still a conceptual gesture.",
+  "Instead, let awareness recognize itself by being exactly as it is.",
+  "Allow the sense of me to appear just as any other sensation.",
+  "Notice that this sense of self is also held within wide open awareness.",
+  "See how thoughts about being the doer arise and dissolve on their own.",
+  "Let the feeling of ownership relax; nothing here requires a controller.",
+  "Notice that awareness is present before the thought of I arises, and after it fades.",
+  "Rest as the knowing in which the sense of self appears and disappears.",
+  "Let appearances move like reflections on water — vivid and transparent.",
+  "Notice that openness does not change when thoughts or self-images move.",
+  "Relax all effort to shape experience; natural mind needs no adjustment.",
+  "Recognize stillness and movement as inseparable within this clarity.",
+  "Simply remain in this uncontrived presence — nothing to hold, nothing to fix."
+];
+
+
     /* ---------- shuffle helper ---------- */
     function createShuffler(arr){
       let pool = [...arr];
@@ -655,6 +682,7 @@
 
     let mahaIndex = 0;
     let trekIndex = 0;
+    let dzPOIndex = 0;
 
     const elContent = document.getElementById('content');
     const stepBtn = document.getElementById('stepBtn');
@@ -672,6 +700,7 @@
     const dzogchenBtn = document.getElementById('dzogchenBtn');
     const mahaBtn = document.getElementById('mahaBtn');
     const trekchoBtn = document.getElementById('trekchoBtn');
+    const dzPOBtn  = document.getElementById('dzPOBtn');
 
     const menuBar = document.getElementById('menuBar');
     const menuToggleBtn = document.getElementById('menuToggleBtn');
@@ -777,6 +806,18 @@
       if(soundEnabled) startSchumann();
     }
 
+    function showDzogchenPOControls(){
+  stepBtn.style.display = 'inline-block';
+  cycleBtn.style.display = 'none';
+  anchorBtn.style.display = 'none';
+  stepBtn.disabled = false;
+  cycleBtn.disabled = true;
+  anchorBtn.disabled = true;
+  infoBtn.style.display = 'inline-block';
+  soundBtn.style.display = 'inline-block';
+  if(soundEnabled) startSchumann();
+}
+
     function setModeDzogchen(){
       teachingMode = 'dzogchen';
       phase = 0;
@@ -796,6 +837,15 @@
       collapseMenu();
     }
 
+    function setModeDzogchenPO(){
+  teachingMode = 'dzogchenPO';
+  dzPOIndex = 0;
+  clearModeExtras();
+  showDzogchenPOControls();
+  fadeTextSlow('Dzogchen Pointing-Out — click the left dot (●) to begin.');
+  collapseMenu();
+}
+
     function setModeTrekcho(){
       teachingMode = 'trekcho';
       trekIndex = 0;
@@ -808,20 +858,26 @@
     dzogchenBtn.addEventListener('click', setModeDzogchen);
     mahaBtn.addEventListener('click', setModeMahamudra);
     trekchoBtn.addEventListener('click', setModeTrekcho);
+    dzPOBtn.addEventListener('click', setModeDzogchenPO);
 
     /* ---------- info modal content ---------- */
     function setInfoContent(){
-      if(teachingMode === 'mahamudra'){
-        infoTitle.textContent = 'Mahamudra Pointing-Out';
-        infoBody.innerHTML = "<p>This module walks you through a Mahamudra-style pointing-out: posture, gaze, slowing of thought, and direct recognition of stillness and movement as one taste. Use the left dot to move step by step.</p><p>Nothing special needs to be produced — each line is an invitation to notice what is already present. If you reach the end, you can repeat the sequence or switch back to another teaching.</p>";
-      } else if(teachingMode === 'trekcho'){
-        infoTitle.textContent = 'Trekchö Cutting-Through';
-        infoBody.innerHTML = "<p>This module offers a simple Trekchö-style cutting-through: relaxing all effort, recognizing the basic knowing already here, looking directly at awareness, and seeing the unfindable yet vivid nature of self and phenomena.</p><p>The steps do not build a state; they point again and again to primordial purity (kadak) as it is. Let the lines land lightly; rest as the open, aware presence they indicate.</p>";
-      } else if(teachingMode === 'dzogchen'){
-        infoTitle.textContent = 'Dzogchen Freeform';
-        infoBody.innerHTML = "<p>Dzogchen Freeform steps through four phases with the left dot: <em>phenomenon → space → revelation → rest</em>. Each iteration invites you to notice a concrete appearance, then the space that holds it, then the nature of that openness, and finally a short period of resting.</p><p>When one full iteration is complete, the left dot disables and the right dot becomes available to start the next iteration. At that same moment an anchor (a short lineage quote) becomes available — press it once to receive a pointer that fades in and out over 30 seconds.</p><p>These are pointers only, not a substitute for direct instruction with a qualified teacher.</p>";
-      }
-    }
+  if(teachingMode === 'mahamudra'){
+    infoTitle.textContent = 'Mahamudra Pointing-Out';
+    infoBody.innerHTML = "<p>This module walks you through a Mahamudra-style pointing-out sequence in small, experiential steps. It emphasizes recognizing the basic clarity of mind within ordinary experience.</p><p>Click the left dot (●) to move through the steps. When the teaching completes, you can choose another module from the menu.</p>";
+  } else if(teachingMode === 'dzogchenPO'){
+    infoTitle.textContent = 'Dzogchen Pointing-Out';
+    infoBody.innerHTML = "<p>This module distills a Dzogchen pointing-out instruction into short, direct steps. It emphasizes relaxing attention wide open, seeing the sense of self as an appearance within awareness, and recognizing natural mind without effort.</p><p>Click the left dot (●) to move through the steps at your own pace. When the teaching completes, you can choose another module from the menu.</p>";
+  } else if(teachingMode === 'trekcho'){
+    infoTitle.textContent = 'Trekchö Cutting-Through';
+    infoBody.innerHTML = "<p>...</p>";
+  } else if(teachingMode === 'dzogchen'){
+    infoTitle.textContent = 'Dzogchen Freeform';
+    infoBody.innerHTML = "<p>...</p>";
+  } else {
+    ...
+  }
+}
 
     infoBtn.addEventListener('click', ()=>{
       if(!teachingMode) return;
@@ -863,6 +919,18 @@
         }
         return;
       }
+
+        // Dzogchen Pointing-Out mode
+  if(teachingMode === 'dzogchenPO'){
+    if(dzPOIndex < dzogchenPOSteps.length){
+      fadeTextSlow(dzogchenPOSteps[dzPOIndex++]);
+      if(dzPOIndex >= dzogchenPOSteps.length){
+        stepBtn.disabled = true;
+        showDzogchenPOCompletion();
+      }
+    }
+    return;
+  }
 
       // Dzogchen freeform mode
       if(teachingMode === 'dzogchen'){
@@ -934,6 +1002,12 @@
       stepBtn.disabled = true;
       expandMenu();
     }
+
+    function showDzogchenPOCompletion(){
+  fadeTextSlow('Dzogchen Pointing-Out teaching complete.');
+  stepBtn.disabled = true;
+  expandMenu();
+}
 
     /* ---------- wiring ---------- */
     stepBtn.addEventListener('click', step);
