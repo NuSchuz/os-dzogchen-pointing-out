@@ -3,96 +3,103 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OpenSpace — Pointing-Out Teachings (V8)</title>
+  <title>OpenSpace — Pointing-Out Teachings (V8.3)</title>
   <style>
     :root{
       --bg:#000000;
       --fg:#ffffff;
       --muted:#8a8a8a;
-      --cardTop:rgba(20,20,22,0.9);
-      --cardBottom:rgba(10,10,12,0.85);
-      --btn:#1e1e1e;
-      --btnHover:#2b2b2b;
-      --radius:14px;
+      --card:#050507;
+      --cardBorder:rgba(255,255,255,0.04);
+      --btn:#101017;
+      --btnHover:#191926;
+      --radius:16px;
     }
 
-    html,body{height:100%;margin:0}
+    *{
+      box-sizing:border-box;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      padding:0;
+    }
 
     body{
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: radial-gradient(circle at top, #111 0%, #000 55%, #000 100%);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      background:radial-gradient(circle at top,#20253a 0,#050509 42%,#000000 100%);
       color:var(--fg);
       display:flex;
       align-items:center;
       justify-content:center;
       min-height:100vh;
       padding:18px;
-      box-sizing:border-box;
     }
 
     #container{
       width:min(720px,96vw);
-      max-width:820px;
+      max-width:840px;
     }
 
-    /* Header: OpenSpace (big) + subtitle + info icon */
+    #headerRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      margin-bottom:16px;
+      gap:12px;
+    }
+
     #headerColumn{
       display:flex;
       flex-direction:column;
       gap:4px;
-      margin-bottom:14px;
+    }
+
+    #titleRow{
+      display:flex;
+      align-items:baseline;
+      gap:8px;
     }
 
     #titleMain{
-      margin:0;
-      font-weight:700;
-      font-size:1.5rem;
-      line-height:1.2;
-      letter-spacing:0.02em;
+      font-weight:600;
+      letter-spacing:0.04em;
+      font-size:1.18rem;
+      text-transform:uppercase;
     }
 
-    #subHeaderRow{
+    #subTitleRow{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-
-    #titleSub{
-      margin:0;
-      font-weight:500;
-      font-size:1.02rem;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      gap:6px;
+      font-size:0.95rem;
       color:var(--muted);
     }
 
-    #infoBtn{
-      flex:0 0 auto;
-      width:22px;
-      height:22px;
+    #infoIcon{
+      width:17px;
+      height:17px;
       border-radius:50%;
-      border:none;
-      padding:0;
-      background:transparent;
+      border:1px solid rgba(255,255,255,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
       cursor:pointer;
-      display:none; /* shown when a teaching is selected */
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cline x1='12' y1='10' x2='12' y2='16'/%3E%3Ccircle cx='12' cy='7' r='1'/%3E%3C/svg%3E");
-      background-repeat:no-repeat;
-      background-position:center;
-      background-size:18px;
-      opacity:0.85;
-      transition:opacity .15s ease, transform .15s ease;
+      flex-shrink:0;
     }
-    #infoBtn:hover{ opacity:1; transform:translateY(-1px); }
 
-    /* Sound row under subtitle */
+    #infoIcon span{
+      transform:translateY(-0.5px);
+    }
+
     #soundRow{
       display:flex;
       justify-content:flex-end;
       margin-top:2px;
     }
+
     #soundBtn{
       width:22px;
       height:22px;
@@ -101,32 +108,110 @@
       padding:0;
       background:transparent;
       cursor:pointer;
-      display:none; /* only when teaching selected */
+      display:none;
       background-repeat:no-repeat;
       background-position:center;
       background-size:18px;
-      opacity:0.75;
-      transition:opacity .15s ease, transform .15s ease;
-    }
-    #soundBtn:hover{
-      opacity:1;
-      transform:translateY(-1px);
+      opacity:0.8;
     }
 
-    /* Card: floating, gradient, soft shadow */
-    #card{
-      background:linear-gradient(180deg, var(--cardTop), var(--cardBottom));
-      padding:20px 20px 22px 20px;
-      border-radius:var(--radius);
-      box-shadow:0 12px 40px rgba(0,0,0,.45);
-      position:relative;
-      backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.04);
-      transition:transform .25s ease, box-shadow .25s ease;
+    #soundBtn:hover{
+      opacity:1;
+      transform:translateY(-0.5px);
     }
-    #card:hover{
-      transform:translateY(-2px);
-      box-shadow:0 16px 48px rgba(0,0,0,.55);
+
+    #menuWrapper{
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+    }
+
+    #menuButton{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 11px;
+      border-radius:999px;
+      background:rgba(12,12,18,0.88);
+      border:1px solid rgba(255,255,255,0.06);
+      cursor:pointer;
+      font-size:0.86rem;
+      color:var(--muted);
+    }
+
+    #menuButton span.icon{
+      width:14px;
+      height:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    #menuButton span.icon svg{
+      display:block;
+    }
+
+    #menuButton span.label{
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+
+    #menuBar{
+      margin-top:8px;
+      display:none;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    #menuBar button{
+      background:rgba(10,10,18,0.94);
+      color:var(--fg);
+      border:none;
+      padding:8px 11px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:0.84rem;
+      letter-spacing:0.03em;
+      text-transform:uppercase;
+      transition:background 0.12s ease,transform 0.12s ease,box-shadow 0.12s ease,opacity 0.12s ease;
+      white-space:nowrap;
+      border:1px solid rgba(255,255,255,0.07);
+    }
+
+    #menuBar button:hover{
+      background:rgba(22,22,32,0.98);
+      transform:translateY(-0.5px);
+      box-shadow:0 6px 14px rgba(0,0,0,0.45);
+    }
+
+    #menuBar button:active{
+      transform:translateY(0);
+      box-shadow:none;
+    }
+
+    #card{
+      position:relative;
+      background:radial-gradient(circle at top left,rgba(255,255,255,0.08) 0,rgba(255,255,255,0.01) 28%,transparent 60%),radial-gradient(circle at bottom right,rgba(0,128,255,0.09) 0,rgba(0,0,0,0.1) 40%,#020308 80%);
+      padding:20px 20px 22px;
+      border-radius:var(--radius);
+      box-shadow:0 18px 48px rgba(0,0,0,0.8);
+      border:1px solid var(--cardBorder);
+      overflow:hidden;
+    }
+
+    #card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top,rgba(255,255,255,0.08) 0,transparent 55%);
+      opacity:0.55;
+      pointer-events:none;
+    }
+
+    #cardInner{
+      position:relative;
+      z-index:1;
     }
 
     #content{
@@ -136,125 +221,97 @@
       justify-content:center;
       padding:18px;
       border-radius:12px;
-      background:rgba(255,255,255,0.01);
+      background:radial-gradient(circle at top,rgba(255,255,255,0.02) 0,rgba(0,0,0,0.85) 40%,rgba(0,0,0,1) 100%);
       color:var(--fg);
-      font-size:1.05rem;
-      line-height:1.5;
+      font-size:1.02rem;
+      line-height:1.58;
       text-align:center;
-      opacity:1;
-      transition:opacity .45s ease;
+      opacity:0;
+      transition:opacity 0.8s ease;
     }
 
     .controls{
       display:flex;
-      gap:12px;
+      gap:14px;
       align-items:center;
       justify-content:center;
-      margin-top:16px;
+      margin-top:18px;
     }
 
     button{
-      background:var(--btn);
-      color:var(--fg);
-      border:none;
-      padding:10px 14px;
-      border-radius:10px;
-      cursor:pointer;
-      font-size:0.95rem;
-      transition:
-        opacity .12s,
-        transform .12s,
-        background .12s,
-        box-shadow .12s;
-      box-shadow:0 4px 12px rgba(0,0,0,0.4);
+      font-family:inherit;
     }
-    button:hover:not(:disabled){
-      background:var(--btnHover);
-      transform:translateY(-1px);
-      box-shadow:0 6px 18px rgba(0,0,0,0.5);
-    }
+
     button:disabled{
-      opacity:.32;
+      opacity:0.32;
       cursor:default;
-      background:#0a0a0a;
-      color:var(--muted);
-      box-shadow:none;
     }
 
     #stepBtn,#cycleBtn{
-      width:52px;
-      height:52px;
-      border-radius:12px;
-      font-size:18px;
-      padding:0;
+      width:56px;
+      height:56px;
+      border-radius:14px;
+      background:var(--btn);
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.05);
+      cursor:pointer;
+      font-size:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:background 0.12s ease,transform 0.12s ease,box-shadow 0.12s ease,opacity 0.12s ease;
+    }
+
+    #stepBtn:hover:not(:disabled),
+    #cycleBtn:hover:not(:disabled){
+      background:var(--btnHover);
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(0,0,0,0.7);
     }
 
     #anchorBtn{
-      width:38px;
+      width:34px;
       height:34px;
-      border-radius:8px;
-      padding:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='6' r='2'/%3E%3Cpath d='M12 8v10'/%3E%3Cpath d='M6 14c0 3.3 2.7 6 6 6s6-2.7 6-6'/%3E%3Cpath d='M6 14l2 2'/%3E%3Cpath d='M18 14l-2 2'/%3E%3C/svg%3E");
-      background-repeat:no-repeat;
-      background-position:center;
-      background-size:20px;
-    }
-
-    /* Menu toggle + menu bar (left-aligned, small) */
-    #menuToggleRow{
-      display:flex;
-      justify-content:flex-start;
-      margin-bottom:6px;
-    }
-    #menuToggleBtn{
-      width:26px;
-      height:26px;
-      padding:0;
-      border-radius:8px;
+      border-radius:16px;
       background:transparent;
-      box-shadow:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round'%3E%3Cline x1='4' y1='7' x2='20' y2='7'/%3E%3Cline x1='4' y1='12' x2='20' y2='12'/%3E%3Cline x1='4' y1='17' x2='20' y2='17'/%3E%3C/svg%3E");
-      background-repeat:no-repeat;
-      background-position:center;
-      background-size:20px;
-      opacity:0.9;
-      transition:opacity .12s ease, transform .12s ease, background .12s ease;
-    }
-    #menuToggleBtn:hover{
-      opacity:1;
-      transform:translateY(-1px);
-    }
-
-    #menuBar{
+      border:none;
+      cursor:pointer;
       display:flex;
-      gap:8px;
-      justify-content:flex-start;
-      margin-bottom:16px;
-      flex-wrap:wrap;
-      transition:max-height .25s ease, opacity .2s ease;
-    }
-    #menuBar button{
-      font-size:0.85rem;
-      padding:6px 10px;
-      border-radius:8px;
-      box-shadow:none;
-      background:rgba(30,30,30,0.85);
-    }
-    #menuBar button:hover:not(:disabled){
-      background:rgba(43,43,43,0.95);
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      opacity:0.75;
     }
 
-    /* Anchor area */
+    #anchorBtn svg{
+      display:block;
+    }
+
+    #anchorBtn:hover:not(:disabled){
+      opacity:1;
+      transform:translateY(-0.5px);
+    }
+
+    #anchorBtn:disabled{
+      opacity:0.25;
+      cursor:default;
+    }
+
+    #anchorWrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      margin-top:10px;
+    }
+
     #anchorArea{
-      margin-top:12px;
-      min-height:46px;
+      margin-top:6px;
+      min-height:34px;
       display:flex;
       align-items:center;
       justify-content:center;
     }
+
     #anchorText{
       opacity:0;
       transition:opacity 15000ms ease;
@@ -262,81 +319,99 @@
       text-align:center;
       max-width:82%;
       font-size:0.95rem;
-      line-height:1.45;
+      line-height:1.46;
     }
 
-    /* Info modal */
     #infoModal{
-      display:none;
       position:fixed;
-      top:0; left:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.75);
-      z-index:1100;
+      inset:0;
+      display:none;
       align-items:center;
       justify-content:center;
-      padding:20px;
-      box-sizing:border-box;
+      background:rgba(0,0,0,0.7);
+      z-index:50;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
     }
-    #infoModalContent{
-      background:rgba(10,10,12,0.96);
-      color:var(--fg);
-      padding:18px;
-      border-radius:12px;
-      max-width:420px;
-      width:100%;
-      max-height:80%;
-      overflow:auto;
-      position:relative;
-      box-shadow:0 18px 50px rgba(0,0,0,.7);
-      font-size:0.95rem;
-      line-height:1.45;
-      border:1px solid rgba(255,255,255,0.05);
+
+    #infoContent{
+      background:#050509;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:18px 18px 16px;
+      max-width:min(480px,92vw);
+      box-shadow:0 18px 52px rgba(0,0,0,0.85);
     }
-    #closeModal{
-      position:absolute;
-      top:10px;
-      right:12px;
-      font-size:18px;
-      background:none;
-      border:none;
-      color:var(--muted);
-      cursor:pointer;
-    }
+
     #infoTitle{
-      margin-top:0;
-      margin-bottom:6px;
-      font-size:1.02rem;
+      margin:0 0 8px;
+      font-size:1rem;
       font-weight:600;
     }
 
-    @media (max-width:480px){
-      #content{ font-size:0.98rem; min-height:84px }
-      #stepBtn, #cycleBtn{ width:48px; height:48px; font-size:18px }
-      #titleMain{ font-size:1.35rem; }
-      #titleSub{ font-size:0.98rem; }
+    #infoBody{
+      margin:0;
+      font-size:0.92rem;
+      line-height:1.6;
+      color:var(--muted);
+    }
+
+    #infoClose{
+      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 12px;
+      border-radius:999px;
+      border:none;
+      background:#101018;
+      color:var(--fg);
+      cursor:pointer;
+      font-size:0.82rem;
+      letter-spacing:0.05em;
+      text-transform:uppercase;
+    }
+
+    #infoClose:hover{
+      background:#181824;
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <!-- Header -->
-    <div id="headerColumn">
-      <h1 id="titleMain">OpenSpace</h1>
-      <div id="subHeaderRow">
-        <h2 id="titleSub">Pointing-Out Teachings</h2>
-        <button id="infoBtn" aria-label="Help"></button>
+    <div id="headerRow">
+      <div id="headerColumn">
+        <div id="titleRow">
+          <div id="titleMain">OpenSpace</div>
+        </div>
+        <div id="subTitleRow">
+          <div id="infoIcon" aria-label="About these teachings">
+            <span>i</span>
+          </div>
+          <div>Pointing-Out Teachings</div>
+        </div>
       </div>
-      <div id="soundRow">
-        <button id="soundBtn" aria-label="Toggle sound"></button>
+      <div style="flex:1"></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;min-width:40px">
+        <div id="soundRow">
+          <button id="soundBtn" aria-label="Toggle sound"></button>
+        </div>
       </div>
     </div>
 
-    <!-- Menu toggle -->
-    <div id="menuToggleRow">
-      <button id="menuToggleBtn" aria-label="Toggle teaching menu"></button>
+    <div id="menuWrapper">
+      <button id="menuButton" type="button" aria-label="Toggle teachings menu">
+        <span class="icon">
+          <svg width="14" height="14" viewBox="0 0 18 18">
+            <line x1="3" y1="5" x2="15" y2="5" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" />
+            <line x1="3" y1="9" x2="15" y2="9" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" />
+            <line x1="3" y1="13" x2="11" y2="13" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="label">Teachings</span>
+      </button>
     </div>
 
-    <!-- Teaching selector: Trekchö, Mahamudra, Freeform (Freeform last) -->
     <div id="menuBar">
       <button id="trekchoBtn">Trekchö Cutting-Through</button>
       <button id="mahaBtn">Mahamudra Pointing-Out</button>
@@ -345,431 +420,485 @@
     </div>
 
     <div id="card">
-      <div id="content">Select a teaching to begin.</div>
+      <div id="cardInner">
+        <div id="content">Select a teaching from the menu to begin.</div>
 
-      <div class="controls" aria-hidden="false">
-        <button id="stepBtn" aria-label="Step" disabled style="display:none;">●</button>
-        <button id="cycleBtn" aria-label="Next iteration" disabled style="display:none;">○</button>
-      </div>
-
-      <div style="display:flex;flex-direction:column;align-items:center">
-        <div style="margin-top:10px;">
-          <button id="anchorBtn" aria-label="Anchor" disabled style="display:none;"></button>
+        <div class="controls" aria-hidden="false">
+          <button id="stepBtn" aria-label="Step">●</button>
+          <button id="cycleBtn" aria-label="Next iteration">○</button>
         </div>
-        <div id="anchorArea"><div id="anchorText"></div></div>
+
+        <div id="anchorWrap">
+          <button id="anchorBtn" aria-label="Anchor">
+            <svg width="20" height="20" viewBox="0 0 20 20">
+              <circle cx="10" cy="8" r="2.1" stroke="#ffffff" stroke-width="1.4" fill="none" />
+              <path d="M10 3.5 L10 6" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" />
+              <path d="M10 10 L10 15" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" />
+              <path d="M6.5 12.5 C7.5 14.2 8.7 15 10 15 C11.3 15 12.5 14.2 13.5 12.5" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" fill="none" />
+            </svg>
+          </button>
+          <div id="anchorArea">
+            <div id="anchorText"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Info modal -->
-  <div id="infoModal" role="dialog" aria-hidden="true">
-    <div id="infoModalContent">
-      <button id="closeModal" aria-label="Close help">×</button>
-      <h3 id="infoTitle">How this works</h3>
-      <div id="infoBody"></div>
+  <div id="infoModal" role="dialog" aria-modal="true">
+    <div id="infoContent">
+      <h3 id="infoTitle">About</h3>
+      <div id="infoBody">
+        <p>Select a teaching from the menu to begin.</p>
+      </div>
+      <button id="infoClose">Close</button>
     </div>
   </div>
 
   <script>
-    /* ---------- Audio setup ---------- */
+    let teachingMode = null;
+    let mahaIndex = 0;
+    let trekIndex = 0;
+    let dzPOIndex = 0;
+    let phase = 0;
+    const maxPhase = 4;
+
+    // Schumann + solfeggio audio engine (kept, but no longer used for user actions)
     let audioCtx = null;
-    let soundEnabled = false;
-    let schumannNodes = null;
+    let schumannOsc = null;
+    let schumannGain = null;
+    let solfeggioGain = null;
+    let soundEnabled = true;
 
-    const SOUND_ICON_ON =
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='5 9 9 9 12 6 12 18 9 15 5 15 5 9'/%3E%3Cpath d='M16 10c1.333 1.333 1.333 2.667 0 4'/%3E%3Cpath d='M18.5 7.5c2.5 2.5 2.5 6.5 0 9'/%3E%3C/svg%3E";
+    const SCHUMANN_FREQ = 7.83;
 
-    const SOUND_ICON_OFF =
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='5 9 9 9 12 6 12 18 9 15 5 15 5 9'/%3E%3Cline x1='16' y1='9' x2='20' y2='13'/%3E%3Cline x1='20' y1='9' x2='16' y2='13'/%3E%3C/svg%3E";
-
-    function ensureAudioCtx(){
+    function ensureAudioContext(){
       if(!audioCtx){
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
     }
 
     function startSchumann(){
-      ensureAudioCtx();
-      stopSchumann();
-      if(audioCtx.state === "suspended") audioCtx.resume();
-
-      const carrier = audioCtx.createOscillator();
-      carrier.type = "sine";
-      carrier.frequency.value = 126; // Hz
-
-      const gain = audioCtx.createGain();
-      gain.gain.value = 0.15;
-
-      const mod = audioCtx.createOscillator();
-      mod.type = "sine";
-      mod.frequency.value = 7.83; // Schumann resonance
-
-      const modGain = audioCtx.createGain();
-      modGain.gain.value = 0.07; // pulsing depth
-
-      mod.connect(modGain).connect(gain.gain);
-      carrier.connect(gain).connect(audioCtx.destination);
-
-      carrier.start();
-      mod.start();
-
-      schumannNodes = { carrier, mod, gain, modGain };
+      ensureAudioContext();
+      if(schumannOsc) return;
+      schumannOsc = audioCtx.createOscillator();
+      schumannGain = audioCtx.createGain();
+      schumannOsc.type = 'sine';
+      schumannOsc.frequency.setValueAtTime(SCHUMANN_FREQ, audioCtx.currentTime);
+      schumannGain.gain.setValueAtTime(0.13, audioCtx.currentTime);
+      schumannOsc.connect(schumannGain).connect(audioCtx.destination);
+      schumannOsc.start();
     }
 
     function stopSchumann(){
-      if(schumannNodes){
-        try {
-          schumannNodes.carrier.stop();
-          schumannNodes.mod.stop();
-        } catch(e){}
-        schumannNodes = null;
+      if(schumannOsc){
+        schumannOsc.stop();
+        schumannOsc.disconnect();
+        schumannOsc = null;
+      }
+      if(schumannGain){
+        schumannGain.disconnect();
+        schumannGain = null;
       }
     }
 
     function playSolfeggio(freq){
-      ensureAudioCtx();
-      if(audioCtx.state === "suspended") audioCtx.resume();
+      if(!soundEnabled) return;
+      ensureAudioContext();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.7);
+    }
+
+    function playPhaseTone(){
+      if(!soundEnabled) return;
+      playSolfeggio(528);
+    }
+
+    // New: single bell-like chime used for selection, completion, anchor
+    function playChime(){
+      if(!soundEnabled) return;
+
+      ensureAudioContext();
 
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
-      osc.type = "sine";
-      osc.frequency.value = freq;
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(963, audioCtx.currentTime); // bright, bell-like
 
-      const now = audioCtx.currentTime;
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.15, now + 0.15);
-      gain.gain.linearRampToValueAtTime(0, now + 0.45);
+      gain.gain.setValueAtTime(0.30, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 5);
 
       osc.connect(gain).connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + 0.6);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 5.05);
     }
 
-    function playPhaseTone(phase){
-      if(!soundEnabled) return;
-      // Dzogchen phases: 0→396, 1→417, 2→528, 3→639 Hz
-      if(phase === 0) playSolfeggio(396);
-      else if(phase === 1) playSolfeggio(417);
-      else if(phase === 2) playSolfeggio(528);
-      else if(phase === 3) playSolfeggio(639);
-    }
+    const SOUND_ICON_OFF =
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='2.2'/%3E%3Cline x1='16' y1='9' x2='20' y2='13'/%3E%3Cline x1='20' y1='9' x2='16' y2='13'/%3E%3C/svg%3E";
 
-    /* ---------- Dzogchen Freeform pools ---------- */
-    const phenomena = [
-      "Notice the next thought that appears.","Notice the next emotion that surfaces.","Notice any bodily sensation you can feel.",
-      "Notice the first sound you hear right now.","Notice a memory that comes to mind.","Notice a fleeting image in your mind.",
-      "Notice an impulse or urge that arises.","Notice tension or relaxation in your body.","Notice any taste, smell, or subtle sensation.",
-      "Notice the feeling of your posture.","Notice a judgment or evaluation as it arises.","Notice any desire or aversion appearing.",
-      "Notice a flicker of attention in your mind.","Notice a pause, blank, or gap in thought.","Notice the flow of breath without changing it.",
-      "Notice a subtle feeling of comfort or discomfort.","Notice curiosity arising in your awareness.","Notice agitation or restlessness.",
-      "Notice a fleeting visual impression in the environment.","Notice an internal dialogue or narrative forming.","Notice a small ache or ease in the body.",
-      "Notice a passing preference or dislike.","Notice the edges of your attention.","Notice a faint mental image that appears.",
-      "Notice the sound your clothes or chair makes.","Notice a recent thought about the future.","Notice the feeling behind a remembered word.",
-      "Notice the subtle holding in your hands or fingers.","Notice any urge to look away or avoid.","Notice a gentle warmth or coolness in the skin.",
-      "Notice the light changing in the room.","Notice the rhythm of your heartbeat.","Notice the space between breaths.",
-      "Notice a smell from the environment.","Notice a memory from childhood.","Notice a small muscle twitch.",
-      "Notice your feet touching the floor.","Notice your hands resting.","Notice the temperature in your fingers.",
-      "Notice the sound of your own breathing.","Notice the weight of your body on the chair.","Notice subtle thoughts passing.",
-      "Notice tension in your jaw or face.","Notice a shift in your posture.","Notice your eyelids and gaze.",
-      "Notice a fleeting emotion briefly.","Notice a color you hadn’t observed.","Notice a lingering mental image.",
-      "Notice subtle movement in your hands.","Notice a background noise appearing.","Notice a faint smell lingering.",
-      "Notice a mental habit.","Notice the pulse in your temples.","Notice any urge to adjust your body.",
-      "Notice the temperature of your breath.","Notice the sense of balance in sitting.","Notice the horizon or edge of vision.",
-      "Notice a faint itch or touch.","Notice the tension in shoulders or neck.",
-      "Notice subtle emotional tones beneath thoughts.","Notice the texture of the present moment.","Notice openness behind sensation.",
-      "Notice the movement of attention itself.","Notice how sound arises unbidden.","Notice stillness behind all motion.",
-      "Notice the immediate presence before labeling.","Notice the rawness of perception.","Notice how a thought fades on its own.",
-      "Notice the boundary between self and sensation dissolving."
-    ];
+    const SOUND_ICON_ON =
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='2.2'/%3E%3Cpath d='M15 12c1.3 .8 1.3 .8 2 0'/%3E%3C/svg%3E";
 
-    const spaceCues = [
-      "Now notice the space in which that appears.","Shift from the arising object to the openness it inhabits.",
-      "Let the image soften; sense the formless ground hosting it.","Notice the simple knowing that doesn't grab the content.",
-      "Sense the ungraspable background where this shows up.","Without changing anything, sense the openness that's aware.",
-      "Notice how the appearance is simply occurring in this field.","Feel the space that is present even when form is vivid.",
-      "Note the clarity that notices without effort.","Allow attention to rest in the open knowing around the object.",
-      "Sense the nonreferential space behind the appearance.","Notice that the space doesn't need the content to be itself.",
-      "Notice the stillness that contains motion and thought.","Sense how this shows up and shows itself without you doing anything.",
-      "Let the background be known as background, not a new object.",
-      "Notice the mind’s awareness as the container.","Observe the openness holding all forms.","Feel the spaciousness beneath thoughts.",
-      "Rest in the awareness observing itself.","Notice the clarity pervading the mental landscape.","Allow the openness to be self-evident.",
-      "Notice how objects arise and dissolve in space.","Sense the field where attention rests naturally.","Notice the horizon of awareness encompassing everything.",
-      "Allow the mind’s natural presence to be felt.","Notice the luminous clarity behind sensations.","Rest in the unbounded ground of mind.",
-      "Notice the gap between mental events.","Observe how awareness remains unshaken.","Sense the non-dual openness of this moment.",
-      "Notice that awareness has no edges.","Sense the expanse that holds even contraction.","Notice how appearances float in openness.",
-      "Feel the inseparability of space and movement.","Sense the vividness and spaciousness as one.","Notice the transparency of the arising phenomenon.",
-      "Let the openness reveal itself as naturally present.","Rest in the boundlessness that is already here."
-    ];
-
-    const revelationCues = [
-      "This openness wasn't created just now.","You didn't produce this space — it's already present.",
-      "The object arose and passed; the knowing remained.","The openness is unchanged by whatever appears.",
-      "You cannot step outside this awareness — it's the ground of all.","This seeing is not something you must assemble.",
-      "Even when unnoticing occurs, it too arises in the same space.","No addition is required for this to be present.",
-      "This is not a state to obtain; it is what appears in all states.","Recognize that nothing could be missing from this field.",
-      "This awareness is prior to concept.","Notice the primordial clarity is always present.","The ground of mind is luminous and open.",
-      "All arising is within the natural state.","No effort can create this space; it simply is.","Even confusion arises in this openness.",
-      "Recognize the immediacy of presence.","No object can limit this awareness.","This is the natural state, already complete.",
-      "Everything unfolds within awareness without interference.","Awareness does not come or go.","The clarity of mind is timeless.",
-      "The ground is self-revealing.","The nature of awareness is inseparable from its display.",
-      "Nothing can obscure the essence, only your noticing.","All movement is the radiance of awareness.","Rigpa is present even when unnoticed.",
-      "The essence has never been altered."
-    ];
-
-    const restingCues = [
-      "Rest here for a moment.","Let everything be exactly as it is.","No need to hold the view; notice it holds itself.",
-      "There's nothing to maintain and nothing to lose.","Simply remain in this effortless openness.","Allow the moment to be as it is without doing.",
-      "Stay with the felt sense of not having to fix anything.","Breathe lightly and rest in what is aware.",
-      "Allow awareness to rest naturally.","Notice the ease of simply being.","No need to interfere with experience.",
-      "Rest in the natural rhythm of mind.","Let each moment be sufficient unto itself.","Feel the spaciousness beneath all phenomena.",
-      "Notice the effortless continuity of presence.","Relax into the unconditioned ground of mind.",
-      "Let stillness reveal itself.","Rest as the space in which sensations arise.","Let the vividness of experience rest on its own.",
-      "Do nothing and let awareness remain as it is.","Rest in the inseparability of openness and clarity.",
-      "Let the ground of being support itself.","Relax all effort, even subtle effort.","Let experience be self-liberating."
-    ];
-
-    const anchorCues = [
-      "In Dzogchen we discover that the root of the mind is awareness or rigpa. This is our true condition. — Namkhai Norbu Rinpoche",
-      "When we recognize that the seemingly object nature of reality is nothing different than the subject nature of mind, which is rigpa, it is called enlightenment. — Dzogchen Ponlop Rinpoche",
-      "Whatever arises in the mind … just let it be, and it will naturally release itself. — Patrul Rinpoche",
-      "The nature of mind is Buddha from the very beginning. — Padmasambhava",
-      "This openness was not created just now. — Traditional Dzogchen teaching",
-      "Rest in natural great peace. — Traditional Dzogchen teaching",
-      "All phenomena are empty, and the nature of mind is already clear. — Tulku Urgyen Rinpoche",
-      "In the state of non-dual awareness, nothing is lacking. — Tulku Urgyen Rinpoche",
-      "The mind's essence is like space: limitless, luminous, and ungraspable. — Longchenpa",
-      "Know the ground; it is free of all elaboration. — Longchenpa",
-      "Those who realize the mind see the essence beyond form. — Saraha",
-      "Do not seek outside; the essence is here, present as awareness. — Tilopa",
-      "All experiences are manifestations of the innate awareness; recognize it as such. — Tilopa",
-      "Whatever you meet, meet it as the display of awareness. — Traditional pointer",
-      "Look directly at the mind that knows. — Traditional pointer",
-      "Not two — awareness and display are inseparable. — Traditional pointer",
-      "Open and empty, this is the natural presence. — Traditional pointer",
-      "Do not become attached to the appearance; rest in the openness. — Traditional pointer",
-      "The view is the simplicity of what is already present. — Traditional pointer"
-    ];
-
-    /* ---------- Mahamudra and Trekchö teaching sequences ---------- */
-
-    const mahamudraSteps = [
-      "Sit comfortably. Let the body be at ease, not rigid.",
-      "Eyes open, gaze slightly lowered. Chin gently tucked, head a little back.",
-      "Relax the jaw. Lips slightly apart, tongue resting on the palate.",
-      "Let the breath be natural. In-breath a bit shorter than the out-breath.",
-      "Feel the weight of the body supported by the seat. Nothing to hold up.",
-      "Let the gaze fall along the line of the nose. Thoughts tend to slow on their own.",
-      "Notice how attention follows the gaze. Downward softens, upward speeds up.",
-      "Allow the whole posture to settle into a sense of simple presence.",
-      "Now notice a faint thought arising. Do not finish it. Just see it appear.",
-      "See how that thought dissolves as soon as it appears, leaving nothing behind.",
-      "Notice a sensation in the body. It too arises, changes, and vanishes.",
-      "Notice a feeling or mood. Watch it move and shift without any solid core.",
-      "All of this movement is happening within a background of stillness.",
-      "Gently shift attention from the moving content to the unmoving background.",
-      "Do this without tightening or searching — simply notice what does not move.",
-      "Thoughts, sensations, and emotions are like ripples on a vast, still lake.",
-      "The lake itself does not move, even while its surface plays.",
-      "Let another thought arise and dissolve. See both the ripple and the lake at once.",
-      "Notice that the ripple never leaves the lake; it is only the lake moving as a pattern.",
-      "In the same way, movement in the mind never leaves stillness.",
-      "Look closely at a single thought: does it have a beginning you can find?",
-      "Does it have a solid middle? A stable end?",
-      "Or is it just a momentary flicker, noticed and gone?",
-      "See how one flicker seems to link to the next, forming a story.",
-      "That linking is what we call discursive thought — a chain of tiny pulses.",
-      "Now instead of following the chain, rest in the space in which the chain appears.",
-      "Notice that this space does not come or go with each thought.",
-      "Movement and stillness are not two different substances; they share one essence.",
-      "The moving is just stillness playing as movement.",
-      "Look between two thoughts. Notice the gap that is clear, open, and already present.",
-      "Recognize that this gap is not produced by effort; it is simply revealed when not covered.",
-      "Let attention rest in this gap, without trying to hold it.",
-      "Even when the next thought arises, it arises inside this same openness.",
-      "You do not fall out of the natural state when a thought appears.",
-      "You have never left the nature of mind; only noticing wanders.",
-      "Let noticing come to rest, as if the mind has sat down in its own place.",
-      "There is nothing to improve here, nothing missing, nothing extra to add.",
-      "Recognize directly: this open, aware, ungraspable stillness is Mahamudra."
-    ];
-
-    const trekchoSteps = [
-      "Sit or stand in any stable, relaxed posture. Let the body be natural.",
-      "Drop the project of fixing or improving yourself, just for this moment.",
-      "Without changing anything, notice that there is simple knowing already here.",
-      "Sounds are known, sensations are known, thoughts are known — effortlessly.",
-      "Turn gently toward this knowing itself, rather than the objects it knows.",
-      "Look directly at the one who is aware. Do you find a shape or color?",
-      "You cannot locate awareness as a thing, yet experience is undeniably present.",
-      "This presence is self-existing: it did not start just now, and it is not produced by effort.",
-      "Let thoughts arise as they wish, like clouds drifting through a wide sky.",
-      "Do not follow the thoughts. Do not block the thoughts. Let them be.",
-      "Notice how each thought appears in this knowing and dissolves back into it.",
-      "The knowing is not stained or improved by any particular thought.",
-      "Emotions may surge like weather, but the open sky does not become the storm.",
-      "Let sensations, feelings, and images play freely, like reflections in a clear mirror.",
-      "The mirror does not prefer one reflection over another.",
-      "Now look again at the basic knowing. Is it inside the body or outside?",
-      "Notice that 'inside' and 'outside' are just ideas appearing in the same knowing.",
-      "Awareness has no edge you can touch, no center you can point to.",
-      "This open, centerless knowing is already free of anything you might add.",
-      "Whatever appears — thought, sound, sensation — is the display of this very awareness.",
-      "There is nothing apart from this display that needs to be found.",
-      "See how, the moment you look for a solid self, nothing definite can be located.",
-      "That unfindability is not a lack; it is primordial purity.",
-      "All elaborate stories about yourself are adornments on this simple knowing.",
-      "Trekchö means cutting through that elaboration in a single, direct seeing.",
-      "Right now, relax all effort to edit experience. Let it be exactly as it is.",
-      "Notice that awareness is not doing anything special; it is naturally present.",
-      "Even confusion or doubt appears within this same clarity.",
-      "There is no need to remove thoughts to rest in awareness.",
-      "Awareness and its display are not two separate things.",
-      "Rest as this open, empty, vividly knowing presence, without improving it.",
-      "Each time you notice you were caught in a story, simply relax back into this knowing.",
-      "The ground has never been altered by the stories that pass across it.",
-      "This is Trekchö: relaxing completely into primordial purity, just as you are."
-    ];
-
-    const dzogchenPOSteps = [
-  "Take one soft inhale and exhale. Let the breath settle into its own rhythm.",
-  "Let the gaze relax open — not focused, not unfocused, simply at ease.",
-  "Let attention rest wide, without narrowing on any object or sensation.",
-  "Notice awareness already present before you try to do anything.",
-  "Let effort soften. Openness is not produced — it is revealed.",
-  "Allow experiences to appear within awareness without pulling at them.",
-  "Look gently for the one who is aware and see that nothing solid is found.",
-  "Notice that the searcher is also just an appearance within awareness.",
-  "Rest in the openness that remains when you stop aiming attention.",
-  "Recognize that trying to look at awareness is still a conceptual gesture.",
-  "Instead, let awareness recognize itself by being exactly as it is.",
-  "Allow the sense of me to appear just as any other sensation.",
-  "Notice that this sense of self is also held within wide open awareness.",
-  "See how thoughts about being the doer arise and dissolve on their own.",
-  "Let the feeling of ownership relax; nothing here requires a controller.",
-  "Notice that awareness is present before the thought of I arises, and after it fades.",
-  "Rest as the knowing in which the sense of self appears and disappears.",
-  "Let appearances move like reflections on water — vivid and transparent.",
-  "Notice that openness does not change when thoughts or self-images move.",
-  "Relax all effort to shape experience; natural mind needs no adjustment.",
-  "Recognize stillness and movement as inseparable within this clarity.",
-  "Simply remain in this uncontrived presence — nothing to hold, nothing to fix."
-];
-
-
-    /* ---------- shuffle helper ---------- */
-    function createShuffler(arr){
-      let pool = [...arr];
-      return function(){
-        if(pool.length === 0) pool = [...arr];
-        const idx = Math.floor(Math.random()*pool.length);
-        const item = pool[idx];
-        pool.splice(idx,1);
-        return item;
-      };
-    }
-
-    const pickPhenomena = createShuffler(phenomena);
-    const pickSpace = createShuffler(spaceCues);
-    const pickRevelation = createShuffler(revelationCues);
-    const pickResting = createShuffler(restingCues);
-    const pickAnchor = createShuffler(anchorCues);
-
-    /* ---------- state & elements ---------- */
-    let teachingMode = null; // 'dzogchen' | 'mahamudra' | 'trekcho' | null
-    let phase = 0;
-    const maxPhase = 4;
-
-    let mahaIndex = 0;
-    let trekIndex = 0;
-    let dzPOIndex = 0;
-
-    const elContent = document.getElementById('content');
+    const content = document.getElementById('content');
     const stepBtn = document.getElementById('stepBtn');
     const cycleBtn = document.getElementById('cycleBtn');
     const anchorBtn = document.getElementById('anchorBtn');
     const anchorText = document.getElementById('anchorText');
-
-    const infoBtn = document.getElementById('infoBtn');
-    const soundBtn = document.getElementById('soundBtn');
+    const trekchoBtn = document.getElementById('trekchoBtn');
+    const mahaBtn = document.getElementById('mahaBtn');
+    const dzogchenBtn = document.getElementById('dzogchenBtn');
+    const dzPOBtn = document.getElementById('dzPOBtn');
+    const menuBar = document.getElementById('menuBar');
+    const menuButton = document.getElementById('menuButton');
+    const infoIcon = document.getElementById('infoIcon');
     const infoModal = document.getElementById('infoModal');
     const infoTitle = document.getElementById('infoTitle');
     const infoBody = document.getElementById('infoBody');
-    const closeModal = document.getElementById('closeModal');
+    const infoClose = document.getElementById('infoClose');
+    const soundBtn = document.getElementById('soundBtn');
 
-    const dzogchenBtn = document.getElementById('dzogchenBtn');
-    const mahaBtn = document.getElementById('mahaBtn');
-    const trekchoBtn = document.getElementById('trekchoBtn');
-    const dzPOBtn  = document.getElementById('dzPOBtn');
-
-    const menuBar = document.getElementById('menuBar');
-    const menuToggleBtn = document.getElementById('menuToggleBtn');
-    let menuExpanded = true;
-
-    let anchorTimeout = null;
-
-    function clearModeExtras(){
-      document.querySelectorAll('.mode-extra-button').forEach(btn => btn.remove());
-    }
-
-    /* fade helpers */
-    function fadeTextFast(newText){ // Dzogchen: 800ms
-      elContent.style.transition = 'opacity 800ms ease';
-      elContent.style.opacity = '0';
+    function fadeTextFast(text){
+      content.style.opacity = 0;
       setTimeout(()=>{
-        elContent.textContent = newText;
-        elContent.style.opacity = '1';
-      }, 800);
+        content.textContent = text;
+        content.style.opacity = 1;
+      }, 150);
     }
 
-    function fadeTextSlow(newText){ // Trekchö + Mahamudra: 1500ms
-      elContent.style.transition = 'opacity 1500ms ease';
-      elContent.style.opacity = '0';
+    function fadeTextSlow(text){
+      content.style.opacity = 0;
       setTimeout(()=>{
-        elContent.textContent = newText;
-        elContent.style.opacity = '1';
-      }, 1500);
-    }
-
-    /* ---------- sound UI ---------- */
-    function updateSoundUI(){
-      if(!soundBtn) return;
-      soundBtn.style.opacity = soundEnabled ? '1' : '0.75';
-      soundBtn.style.backgroundImage = "url('" + (soundEnabled ? SOUND_ICON_ON : SOUND_ICON_OFF) + "')";
-    }
-
-    soundBtn.addEventListener('click', ()=>{
-      soundEnabled = !soundEnabled;
-      ensureAudioCtx();
-      if(audioCtx.state === "suspended") audioCtx.resume();
-
-      if(soundEnabled){
-        if(teachingMode === 'mahamudra' || teachingMode === 'trekcho'){
-          startSchumann();
-        }
-      } else {
-        stopSchumann();
-      }
-      updateSoundUI();
-    });
-
-    /* ---------- menu toggle ---------- */
-    menuToggleBtn.addEventListener('click', ()=>{
-      menuExpanded = !menuExpanded;
-      menuBar.style.display = menuExpanded ? 'flex' : 'none';
-    });
-
-    function collapseMenu(){
-      menuExpanded = false;
-      menuBar.style.display = 'none';
+        content.textContent = text;
+        content.style.opacity = 1;
+      }, 400);
     }
 
     function expandMenu(){
-      menuExpanded = true;
       menuBar.style.display = 'flex';
     }
 
-    /* ---------- mode setters ---------- */
+    function collapseMenu(){
+      menuBar.style.display = 'none';
+    }
+
+    function clearModeExtras(){
+      anchorText.style.opacity = 0;
+      anchorText.textContent = "";
+    }
+
+    const mahamudraSteps = [
+      "Sit comfortably. Eyes open, gaze lowered.",
+      "Relax jaw, lips slightly apart, tongue resting on the palate.",
+      "Let the gaze fall naturally; do not fixate on any one thing.",
+      "Notice the pervasive stillness already present.",
+      "A thought arises — and dissolves on its own.",
+      "Feelings, sensations, perceptions arise and vanish.",
+      "Notice what moves and what does not.",
+      "Return attention gently to stillness whenever it wanders.",
+      "See that movement arises within stillness, made of stillness.",
+      "Movement and stillness share the same essence.",
+      "Look between thoughts — the gap is the natural state.",
+      "Recognize that you have never truly left this nature.",
+      "Allow recognition to deepen without forcing it.",
+      "Rest directly in that which is aware of all of this.",
+      "Let even the idea of meditating fall away; remain as this."
+    ];
+
+    const trekchoSteps = [
+      "Sit in a way that is alert yet unforced.",
+      "Let the spine be naturally straight, not rigid.",
+      "Let the gaze be open and level, without focusing on any point.",
+      "Notice thoughts as they arise — sharp, soft, fast, slow.",
+      "See each thought as a momentary ripple in a wide, clear expanse.",
+      "Do not follow the thought, and do not push it away.",
+      "Let the energy of the thought self-release, like writing on water.",
+      "Notice that what you are is not the thought, but the knowing of it.",
+      "Feelings and identities appear in exactly the same way — arising, shimmering, vanishing.",
+      "Look at a strong emotion and see if you can find a solid core.",
+      "Notice how even a heavy emotion is changing from moment to moment.",
+      "Let the sense of being a fixed someone soften at the edges.",
+      "Recognize that what you are does not come and go with these appearances.",
+      "Rest as the simple clarity in which all of this happens.",
+      "Again and again, allow everything to be exactly as it is — already empty, already free."
+    ];
+
+    const dzogchenPOSteps = [
+      "Take one soft inhale and exhale. Let the breath settle into its own rhythm.",
+      "Let the gaze relax open — not focused, not unfocused, simply at ease.",
+      "Let attention rest wide, without narrowing on any object or sensation.",
+      "Notice awareness already present before you try to do anything.",
+      "Let effort soften. Openness is not produced — it is revealed.",
+      "Allow experiences to appear within awareness without pulling at them.",
+      "Look gently for the one who is aware and see that nothing solid is found.",
+      "Notice that the searcher is also just an appearance within awareness.",
+      "Rest in the openness that remains when you stop aiming attention.",
+      "Recognize that trying to look at awareness is still a conceptual gesture.",
+      "Instead, let awareness recognize itself by being exactly as it is.",
+      "Allow the sense of me to appear just as any other sensation.",
+      "Notice that this sense of self is also held within wide open awareness.",
+      "See how thoughts about being the doer arise and dissolve on their own.",
+      "Let the feeling of ownership relax; nothing here requires a controller.",
+      "Notice that awareness is present before the thought of I arises, and after it fades.",
+      "Rest as the knowing in which the sense of self appears and disappears.",
+      "Let appearances move like reflections on water — vivid and transparent.",
+      "Notice that openness does not change when thoughts or self-images move.",
+      "Relax all effort to shape experience; natural mind needs no adjustment.",
+      "Recognize stillness and movement as inseparable within this clarity.",
+      "Simply remain in this uncontrived presence — nothing to hold, nothing to fix."
+    ];
+
+    const phenomenaCues = [
+      "Notice the next thought that appears.",
+      "Notice the next emotion that surfaces.",
+      "Notice the next sensation in the body that draws your attention.",
+      "Notice the next sound that arises in your field of hearing.",
+      "Notice the next visual impression, even with eyes closed.",
+      "Notice the next subtle shift in mood or energy.",
+      "Notice the next memory or image that drifts through.",
+      "Notice the next moment of distraction.",
+      "Notice the next moment of clarity.",
+      "Notice the next desire that briefly appears.",
+      "Notice the next worry that tries to form.",
+      "Notice the next judgment or opinion that shows up.",
+      "Notice the next moment of doubt.",
+      "Notice the next moment of ease or relief.",
+      "Notice the next mental label your mind applies.",
+      "Notice the next bodily tension that comes into focus.",
+      "Notice the next pleasant sensation.",
+      "Notice the next unpleasant sensation.",
+      "Notice the next neutral sensation you usually overlook.",
+      "Notice the next subtle expectation that arises.",
+      "Notice the next feeling of I or me appearing.",
+      "Notice the next story your mind begins to tell.",
+      "Notice the next moment when you think you are meditating correctly.",
+      "Notice the next moment when you think you are meditating incorrectly.",
+      "Notice the next sense of ownership over experience.",
+      "Notice the next time you try to improve this moment.",
+      "Notice the next impulse to fix or change something.",
+      "Notice the next instance of impatience or restlessness.",
+      "Notice the next moment of curiosity about what is happening.",
+      "Notice the next moment of boredom.",
+      "Notice the next subtle contraction in the chest or belly.",
+      "Notice the next small relaxation in the body.",
+      "Notice the next sense of distance between you and what is happening.",
+      "Notice the next time everything briefly seems close and intimate.",
+      "Notice the next moment of resistance to what is.",
+      "Notice the next moment of acceptance of what is.",
+      "Notice the next sense of time stretching out or speeding up.",
+      "Notice the next impulse to chase after a pleasant feeling.",
+      "Notice the next impulse to escape an unpleasant feeling.",
+      "Notice the next moment of feeling separate from the world.",
+      "Notice the next moment of feeling connected to everything.",
+      "Notice the next thought about past or future.",
+      "Notice the next flicker of intuition or insight.",
+      "Notice the next time you try to hold onto a state.",
+      "Notice the next time something simply passes on its own.",
+      "Notice the next tiny surprise that appears in the mind.",
+      "Notice the next obvious sensation, then the most subtle one.",
+      "Notice the next moment you recognize that you are aware.",
+      "Notice the next time you forget you are aware, and then notice again.",
+      "Notice the next shift in attention, however small."
+    ];
+
+    const spaceCues = [
+      "Now notice the open space in which that thought appears.",
+      "Now notice the open space in which that emotion appears.",
+      "Now notice the open space in which that sensation appears.",
+      "Now notice the open space in which that sound is heard.",
+      "Now notice the open space in which this seeing is happening.",
+      "Now notice the open space in which this entire mood is unfolding.",
+      "Now notice the open space in which this memory is floating.",
+      "Now notice the open space in which distraction and clarity both arise.",
+      "Now notice the open space that is present before, during, and after each thought.",
+      "Now notice the open space that is present before, during, and after each emotion.",
+      "Now notice the open space that does not change when sensations change.",
+      "Now notice the open space in which all these labels occur.",
+      "Now notice the open space that holds both pleasure and pain.",
+      "Now notice the open space that holds both confidence and doubt.",
+      "Now notice the open space that holds both resistance and acceptance.",
+      "Now notice the open space that holds the sense of I and the world together.",
+      "Now notice the open space that is not divided into inside and outside.",
+      "Now notice the open space that is not limited by the body.",
+      "Now notice the open space that is not limited by the room you are in.",
+      "Now notice the open space that does not begin or end at the skin.",
+      "Now notice the open space in which time seems to appear.",
+      "Now notice the open space that is not rushing or slowing down.",
+      "Now notice the open space in which effort appears.",
+      "Now notice the open space in which letting go happens.",
+      "Now notice the open space that is quietly present beneath all activity.",
+      "Now notice the open space in which both noise and silence appear.",
+      "Now notice the open space in which both knowing and not-knowing appear.",
+      "Now notice the open space that is not improved by any experience.",
+      "Now notice the open space that is not harmed by any experience.",
+      "Now notice the open space that holds both clarity and confusion.",
+      "Now notice the open space that is present even when you feel distracted.",
+      "Now notice the open space that is present even when you feel present.",
+      "Now notice the open space that does not push anything away.",
+      "Now notice the open space that does not cling to anything.",
+      "Now notice the open space in which the sense of a separate self appears.",
+      "Now notice the open space in which that sense of self dissolves.",
+      "Now notice the open space that is utterly simple and uncontrived.",
+      "Now notice the open space that feels like a quiet, intimate absence of obstruction.",
+      "Now notice the open space that is gently luminous, without any particular object.",
+      "Now notice the open space in which this instruction is heard.",
+      "Now notice the open space that does not belong to anyone.",
+      "Now notice the open space that is not somewhere else.",
+      "Now notice the open space that is here, before you look for it.",
+      "Now notice the open space in which looking itself happens.",
+      "Now notice the open space that remains when you stop trying to understand.",
+      "Now notice the open space that remains when you stop trying to fix.",
+      "Now notice the open space that remains when you stop trying to meditate correctly.",
+      "Now notice the open space that remains when you stop trying to be someone.",
+      "Now notice the open space that has quietly been here the entire time."
+    ];
+
+    const revelationCues = [
+      "See that the thought and the space are not truly separate.",
+      "See that the emotion and the space are not truly separate.",
+      "See that the sensation and the space are not truly separate.",
+      "See that the sound and the space of hearing are not truly separate.",
+      "See that the visual impression and the space of seeing are not truly separate.",
+      "See that the mood and the space it arises in are not truly separate.",
+      "See that the memory and the spaciousness holding it are not truly separate.",
+      "See that distraction and clarity are made of the same open knowing.",
+      "See that the beginning and ending of a thought are made of the same clear presence.",
+      "See that the intensity of an emotion is nothing other than vivid openness.",
+      "See that sensations are movements within openness, not outside it.",
+      "See that labels appear as tiny ripples on the surface of vast clarity.",
+      "See that pleasure is inseparable from the space that knows it.",
+      "See that pain is inseparable from the space that knows it.",
+      "See that doubt arises as a pattern within unshaken awareness.",
+      "See that resistance is a temporary texture within unresisting openness.",
+      "See that acceptance is also just another texture in the same openness.",
+      "See that the sense of I is an appearance within what you truly are.",
+      "See that the world appears within what you truly are.",
+      "See that inside and outside are ideas appearing in a single field of knowing.",
+      "See that the body appears within awareness, rather than awareness inside a body.",
+      "See that the room appears within awareness, rather than awareness inside a room.",
+      "See that time appears as a story within timeless presence.",
+      "See that the effort to meditate is made of the same clarity as the rest of experience.",
+      "See that letting go is simply the absence of extra commentary on what already is.",
+      "See that noise is vivid clarity taking a particular form.",
+      "See that silence is vivid clarity without that form.",
+      "See that confusion is clarity temporarily misrecognized.",
+      "See that clarity is confusion recognized as what it truly is.",
+      "See that even the wish to awaken is an expression of awakening already moving.",
+      "See that the wish to escape suffering arises in the same field as peace.",
+      "See that self and other arise together as a single play of experience.",
+      "See that observer and observed dissolve into one seamless intimacy.",
+      "See that the sense of distance is a thought held in boundless nearness.",
+      "See that the sense of separation is a wave in the ocean of non-separation.",
+      "See that every movement of mind is made of the same empty-luminous essence.",
+      "See that there is no separate witness outside of what is happening.",
+      "See that witnessing and what is witnessed are not two.",
+      "See that the feeling this is it is not separate from ordinary experience.",
+      "See that the feeling this cannot be it is also not separate from natural awareness.",
+      "See that everything you resist points back to the openness resisting nothing.",
+      "See that everything you want to hold points back to the openness holding everything.",
+      "See that the search for a special state obscures the simplicity already here.",
+      "See that the recognition itself requires no special state.",
+      "See that natural awareness is not improved by spiritual experiences.",
+      "See that natural awareness is not harmed by ordinary confusion.",
+      "See that the one who would attain is another momentary pattern in what is already complete.",
+      "See that nothing needs to happen for this to be as it is.",
+      "See that this seeing is happening without a separate seer.",
+      "See that what you are looking for is the one who is looking."
+    ];
+
+    const restingCues = [
+      "Rest as the simple knowing in which all of this appears.",
+      "Rest as the open space that does not come or go.",
+      "Rest as the clarity that does not depend on any particular experience.",
+      "Rest as the natural awareness that has been present since before this moment.",
+      "Rest as the gentle, ungraspable presence that is aware right now.",
+      "Rest as the silent witness that cannot be found as an object.",
+      "Rest as the intimate field in which inside and outside lose their meaning.",
+      "Rest as the ease that does not need a reason.",
+      "Rest as the stillness that quietly holds all movement.",
+      "Rest as the quiet that is untouched by the noise it contains.",
+      "Rest as the space that is not improved by understanding.",
+      "Rest as the space that is not diminished by confusion.",
+      "Rest as the simple fact of being, before the word I arises.",
+      "Rest as the awake, empty openness in which this instruction appears.",
+      "Rest as the transparency in which body, mind, and world briefly shine.",
+      "Rest as the luminous absence of anything solid to hold onto.",
+      "Rest as the presence that does not begin or end with the breath.",
+      "Rest as the knowing that is not inside the head or behind the eyes.",
+      "Rest as the vastness that is somehow closer than your own heartbeat.",
+      "Rest as the natural state — uncontrived, uncorrected, unenhanced.",
+      "Rest as though there is nothing to do and nowhere to go.",
+      "Rest as though this is already complete, because it is.",
+      "Rest as the open hand that has dropped every tool and strategy.",
+      "Rest as the sky that does not try to change the weather.",
+      "Rest as the love that does not need an object.",
+      "Rest as the compassion that sees all experiences as equally free.",
+      "Rest as the recognition that no moment is outside of this.",
+      "Rest as though you have been here all along, because you have.",
+      "Rest as the awake emptiness that everything has been pointing to.",
+      "Rest as the simplicity of this very moment, exactly as it is.",
+      "Rest without trying to hold on to resting.",
+      "Rest without checking if you are resting correctly.",
+      "Rest without hoping for a better experience.",
+      "Rest without pushing away this one.",
+      "Rest in the knowing that even unrest appears in complete rest.",
+      "Rest as the clarity that recognizes itself in all conditions.",
+      "Rest as the openness that has never actually been absent.",
+      "Rest with nothing excluded.",
+      "Rest with nothing extra added.",
+      "Rest as the one taste of whatever appears.",
+      "Rest as the continuous hum of being that underlies every sound.",
+      "Rest as the gentle seeing that underlies every sight.",
+      "Rest as the pure knowing that underlies every thought.",
+      "Rest as the effortless awareness that is reading these words.",
+      "Rest as the boundless, centerless presence that cannot be lost.",
+      "Rest here, as you are, without moving away.",
+      "Rest here, as you are, without reaching forward.",
+      "Rest here, as you are, as the natural state already shining.",
+      "Rest, and let even the idea of resting dissolve.",
+      "Simply be, and let this be enough."
+    ];
+
+    const anchorCues = [
+      "This is the mind of all the Buddhas of the three times.",
+      "This is the ordinary mind recognized exactly as it is.",
+      "This is the open, empty clarity that your teachers pointed to.",
+      "This is the ground of experience you have never actually left.",
+      "These are the waves of the ocean recognizing themselves as water.",
+      "This is the natural state, effortless and already complete.",
+      "This is the original face before any story about who you are.",
+      "This is the awake, empty knowing that has been here all along.",
+      "This is the view of the lineage, appearing as your own direct experience.",
+      "This is the taste of liberation in the midst of everyday mind.",
+      "This is the simplicity beyond improvement or decline.",
+      "This is what all the practices were quietly preparing you to notice."
+    ];
+
+    function createShuffler(array){
+      let remaining = [];
+      return function(){
+        if(remaining.length === 0){
+          remaining = array.slice();
+        }
+        const idx = Math.floor(Math.random() * remaining.length);
+        const item = remaining[idx];
+        remaining.splice(idx, 1);
+        return item;
+      };
+    }
+
+    const pickPhenomena = createShuffler(phenomenaCues);
+    const pickSpace = createShuffler(spaceCues);
+    const pickRevelation = createShuffler(revelationCues);
+    const pickResting = createShuffler(restingCues);
+    const pickAnchor = createShuffler(anchorCues);
 
     function showDzogchenControls(){
       stepBtn.style.display = 'inline-block';
@@ -778,8 +907,8 @@
       stepBtn.disabled = false;
       cycleBtn.disabled = true;
       anchorBtn.disabled = true;
-      infoBtn.style.display = 'inline-block';
       soundBtn.style.display = 'inline-block';
+      if(soundEnabled) stopSchumann();
     }
 
     function showMahamudraControls(){
@@ -789,9 +918,7 @@
       stepBtn.disabled = false;
       cycleBtn.disabled = true;
       anchorBtn.disabled = true;
-      infoBtn.style.display = 'inline-block';
       soundBtn.style.display = 'inline-block';
-      if(soundEnabled) startSchumann();
     }
 
     function showTrekchoControls(){
@@ -801,31 +928,27 @@
       stepBtn.disabled = false;
       cycleBtn.disabled = true;
       anchorBtn.disabled = true;
-      infoBtn.style.display = 'inline-block';
       soundBtn.style.display = 'inline-block';
-      if(soundEnabled) startSchumann();
     }
 
     function showDzogchenPOControls(){
-  stepBtn.style.display = 'inline-block';
-  cycleBtn.style.display = 'none';
-  anchorBtn.style.display = 'none';
-  stepBtn.disabled = false;
-  cycleBtn.disabled = true;
-  anchorBtn.disabled = true;
-  infoBtn.style.display = 'inline-block';
-  soundBtn.style.display = 'inline-block';
-  if(soundEnabled) startSchumann();
-}
+      stepBtn.style.display = 'inline-block';
+      cycleBtn.style.display = 'none';
+      anchorBtn.style.display = 'none';
+      stepBtn.disabled = false;
+      cycleBtn.disabled = true;
+      anchorBtn.disabled = true;
+      soundBtn.style.display = 'inline-block';
+    }
 
     function setModeDzogchen(){
       teachingMode = 'dzogchen';
       phase = 0;
       clearModeExtras();
-      stopSchumann(); // no continuous hum in Dzogchen
       showDzogchenControls();
       fadeTextFast('Click the left dot (●) to step through the first iteration.');
       collapseMenu();
+      playChime();
     }
 
     function setModeMahamudra(){
@@ -835,16 +958,8 @@
       showMahamudraControls();
       fadeTextSlow('Mahamudra — click the left dot (●) to begin.');
       collapseMenu();
+      playChime();
     }
-
-    function setModeDzogchenPO(){
-  teachingMode = 'dzogchenPO';
-  dzPOIndex = 0;
-  clearModeExtras();
-  showDzogchenPOControls();
-  fadeTextSlow('Dzogchen Pointing-Out — click the left dot (●) to begin.');
-  collapseMenu();
-}
 
     function setModeTrekcho(){
       teachingMode = 'trekcho';
@@ -853,6 +968,17 @@
       showTrekchoControls();
       fadeTextSlow('Trekchö — click the left dot (●) to begin.');
       collapseMenu();
+      playChime();
+    }
+
+    function setModeDzogchenPO(){
+      teachingMode = 'dzogchenPO';
+      dzPOIndex = 0;
+      clearModeExtras();
+      showDzogchenPOControls();
+      fadeTextSlow('Dzogchen Pointing-Out — click the left dot (●) to begin.');
+      collapseMenu();
+      playChime();
     }
 
     dzogchenBtn.addEventListener('click', setModeDzogchen);
@@ -860,41 +986,9 @@
     trekchoBtn.addEventListener('click', setModeTrekcho);
     dzPOBtn.addEventListener('click', setModeDzogchenPO);
 
-    /* ---------- info modal content ---------- */
-    function setInfoContent(){
-  if(teachingMode === 'mahamudra'){
-    infoTitle.textContent = 'Mahamudra Pointing-Out';
-    infoBody.innerHTML = "<p>This module walks you through a Mahamudra-style pointing-out sequence in small, experiential steps. It emphasizes recognizing the basic clarity of mind within ordinary experience.</p><p>Click the left dot (●) to move through the steps. When the teaching completes, you can choose another module from the menu.</p>";
-  } else if(teachingMode === 'dzogchenPO'){
-    infoTitle.textContent = 'Dzogchen Pointing-Out';
-    infoBody.innerHTML = "<p>This module distills a Dzogchen pointing-out instruction into short, direct steps. It emphasizes relaxing attention wide open, seeing the sense of self as an appearance within awareness, and recognizing natural mind without effort.</p><p>Click the left dot (●) to move through the steps at your own pace. When the teaching completes, you can choose another module from the menu.</p>";
-  } else if(teachingMode === 'trekcho'){
-    infoTitle.textContent = 'Trekchö Cutting-Through';
-    infoBody.innerHTML = "<p>...</p>";
-  } else if(teachingMode === 'dzogchen'){
-    infoTitle.textContent = 'Dzogchen Freeform';
-    infoBody.innerHTML = "<p>...</p>";
-  }
-}
-
-    infoBtn.addEventListener('click', ()=>{
-      if(!teachingMode) return;
-      setInfoContent();
-      infoModal.style.display = 'flex';
-      infoModal.setAttribute('aria-hidden','false');
-    });
-
-    closeModal.addEventListener('click', ()=>{
-      infoModal.style.display = 'none';
-      infoModal.setAttribute('aria-hidden','true');
-    });
-
-    /* ---------- interactions ---------- */
-
     function step(){
       if(stepBtn.disabled || !teachingMode) return;
 
-      // Mahamudra mode
       if(teachingMode === 'mahamudra'){
         if(mahaIndex < mahamudraSteps.length){
           fadeTextSlow(mahamudraSteps[mahaIndex++]);
@@ -906,7 +1000,6 @@
         return;
       }
 
-      // Trekchö mode
       if(teachingMode === 'trekcho'){
         if(trekIndex < trekchoSteps.length){
           fadeTextSlow(trekchoSteps[trekIndex++]);
@@ -918,32 +1011,34 @@
         return;
       }
 
-        // Dzogchen Pointing-Out mode
-  if(teachingMode === 'dzogchenPO'){
-    if(dzPOIndex < dzogchenPOSteps.length){
-      fadeTextSlow(dzogchenPOSteps[dzPOIndex++]);
-      if(dzPOIndex >= dzogchenPOSteps.length){
-        stepBtn.disabled = true;
-        showDzogchenPOCompletion();
+      if(teachingMode === 'dzogchenPO'){
+        if(dzPOIndex < dzogchenPOSteps.length){
+          fadeTextSlow(dzogchenPOSteps[dzPOIndex++]);
+          if(dzPOIndex >= dzogchenPOSteps.length){
+            stepBtn.disabled = true;
+            showDzogchenPOCompletion();
+          }
+        }
+        return;
       }
-    }
-    return;
-  }
 
-      // Dzogchen freeform mode
       if(teachingMode === 'dzogchen'){
-        let text = '';
-        if(phase === 0) text = pickPhenomena();
-        else if(phase === 1) text = pickSpace();
-        else if(phase === 2) text = pickRevelation();
-        else if(phase === 3) text = pickResting();
+        let text = "";
+        if(phase === 0){
+          text = pickPhenomena();
+        } else if(phase === 1){
+          text = pickSpace();
+        } else if(phase === 2){
+          text = pickRevelation();
+        } else if(phase === 3){
+          text = pickResting();
+        }
 
-        playPhaseTone(phase);
+        // No more phase tone; silent stepping
         fadeTextFast(text);
         phase++;
 
         if(phase >= maxPhase){
-          // iteration complete
           stepBtn.disabled = true;
           cycleBtn.disabled = false;
           anchorBtn.disabled = false;
@@ -952,86 +1047,122 @@
       }
     }
 
-    function cycle(){
-      if(cycleBtn.disabled || teachingMode !== 'dzogchen') return;
+    stepBtn.addEventListener('click', step);
 
-      // start next Dzogchen iteration
+    function cycle(){
+      if(teachingMode !== 'dzogchen') return;
       phase = 0;
+      stepBtn.disabled = false;
       cycleBtn.disabled = true;
       anchorBtn.disabled = true;
-      stepBtn.disabled = false;
-
-      playPhaseTone(0);
-      fadeTextFast(pickPhenomena());
-      phase = 1;
+      fadeTextFast("New iteration. Click ● again.");
     }
 
-    function showAnchor(){
-      if(anchorBtn.disabled || teachingMode !== 'dzogchen') return;
+    cycleBtn.addEventListener('click', cycle);
 
-      anchorBtn.disabled = true;
-
-      if(anchorTimeout) {
-        clearTimeout(anchorTimeout);
-        anchorTimeout = null;
-      }
-
-      anchorText.textContent = pickAnchor();
-      anchorText.style.opacity = '1';
-
-      anchorTimeout = setTimeout(()=>{
-        anchorText.style.opacity = '0';
-        anchorTimeout = setTimeout(()=>{
-          anchorText.textContent = '';
-          if(!cycleBtn.disabled) anchorBtn.disabled = false;
-          anchorTimeout = null;
-        }, 15000);
-      }, 15000);
-    }
+    anchorBtn.addEventListener('click', ()=>{
+      if(teachingMode !== 'dzogchen') return;
+      anchorText.style.opacity = 0;
+      setTimeout(()=>{
+        anchorText.textContent = pickAnchor();
+        anchorText.style.opacity = 1;
+      }, 50);
+      playChime();
+    });
 
     function showMahamudraCompletion(){
       fadeTextSlow('Mahamudra teaching complete.');
       stepBtn.disabled = true;
       expandMenu();
+      playChime();
     }
 
     function showTrekchoCompletion(){
       fadeTextSlow('Trekchö teaching complete.');
       stepBtn.disabled = true;
       expandMenu();
+      playChime();
     }
 
     function showDzogchenPOCompletion(){
-  fadeTextSlow('Dzogchen Pointing-Out teaching complete.');
-  stepBtn.disabled = true;
-  expandMenu();
-}
+      fadeTextSlow('Dzogchen Pointing-Out teaching complete.');
+      stepBtn.disabled = true;
+      expandMenu();
+      playChime();
+    }
 
-    /* ---------- wiring ---------- */
-    stepBtn.addEventListener('click', step);
-    cycleBtn.addEventListener('click', cycle);
-    anchorBtn.addEventListener('click', showAnchor);
-
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter' || e.key === ' ') {
-        if(!stepBtn.disabled && teachingMode) { e.preventDefault(); step(); }
-        else if(!cycleBtn.disabled && teachingMode === 'dzogchen') { e.preventDefault(); cycle(); }
+    function setInfoContent(){
+      if(teachingMode === 'mahamudra'){
+        infoTitle.textContent = 'Mahamudra Pointing-Out';
+        infoBody.innerHTML = "<p>This module walks you through a Mahamudra-style pointing-out sequence in small, experiential steps. It emphasizes recognizing the basic clarity of mind within ordinary experience.</p><p>Click the left dot (●) to move through the steps. When the teaching completes, you can choose another module from the menu.</p>";
+      } else if(teachingMode === 'dzogchenPO'){
+        infoTitle.textContent = 'Dzogchen Pointing-Out';
+        infoBody.innerHTML = "<p>This module distills a Dzogchen pointing-out instruction into short, direct steps. It emphasizes relaxing attention wide open, seeing the sense of self as an appearance within awareness, and recognizing natural mind without effort.</p><p>Click the left dot (●) to move through the steps at your own pace. When the teaching completes, you can choose another module from the menu.</p>";
+      } else if(teachingMode === 'trekcho'){
+        infoTitle.textContent = 'Trekchö Cutting-Through';
+        infoBody.innerHTML = "<p>This module offers a cutting-through style of pointing-out. It invites you to see thoughts and identities as already empty while remaining fully present with experience.</p>";
+      } else if(teachingMode === 'dzogchen'){
+        infoTitle.textContent = 'Dzogchen Freeform';
+        infoBody.innerHTML = "<p>This module cycles through phenomena, space, revelation, and resting. It is a more open-ended pointing-out sequence that can be repeated as often as you like.</p>";
+      } else {
+        infoTitle.textContent = 'Information';
+        infoBody.innerHTML = "<p>Select a module from the menu to begin.</p>";
       }
-      if(e.key === 'a' || e.key === 'A'){ if(!anchorBtn.disabled && teachingMode === 'dzogchen') showAnchor(); }
-      if(e.key === 'i' || e.key === 'I'){
-        if(!teachingMode) return;
+    }
+
+    infoBtn = infoIcon; // alias if used elsewhere
+
+    infoIcon.addEventListener('click', ()=>{
+      if(!teachingMode){
+        infoTitle.textContent = 'OpenSpace — Pointing-Out Teachings';
+        infoBody.innerHTML = "<p>Select a teaching from the menu, then use the ● button to move through the steps. Each module offers a different style of pointing-out guidance.</p>";
+      } else {
         setInfoContent();
-        infoModal.style.display = (infoModal.style.display === 'flex' ? 'none' : 'flex');
+      }
+      infoModal.style.display = 'flex';
+    });
+
+    infoClose.addEventListener('click', ()=>{
+      infoModal.style.display = 'none';
+    });
+
+    infoModal.addEventListener('click', (e)=>{
+      if(e.target === infoModal){
+        infoModal.style.display = 'none';
       }
     });
 
-    // initial state: menu expanded, no teaching selected; controls + info hidden
-    menuBar.style.display = 'flex';
+    menuButton.addEventListener('click', ()=>{
+      if(menuBar.style.display === 'flex'){
+        collapseMenu();
+      } else {
+        expandMenu();
+      }
+    });
+
+    function updateSoundUI(){
+      if(!soundBtn) return;
+      soundBtn.style.backgroundImage = "url('" + (soundEnabled ? SOUND_ICON_ON : SOUND_ICON_OFF) + "')";
+    }
+
+    soundBtn.addEventListener('click', ()=>{
+      soundEnabled = !soundEnabled;
+      if(!soundEnabled){
+        stopSchumann(); // just in case something was running
+      }
+      updateSoundUI();
+    });
+
+    // Initial state
     stepBtn.disabled = true;
     cycleBtn.disabled = true;
     anchorBtn.disabled = true;
-    infoBtn.style.display = 'none';
-    soundBtn.style.display = 'none';
+
+    stepBtn.style.display = 'none';
+    cycleBtn.style.display = 'none';
+    anchorBtn.style.display = 'none';
+
+    soundBtn.style.display = 'inline-block';
     soundBtn.style.backgroundImage = "url('" + SOUND_ICON_OFF + "')";
     updateSoundUI();
   </script>
