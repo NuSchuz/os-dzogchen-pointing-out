@@ -193,9 +193,9 @@
 
     <!-- Teaching selector (Option A, collapsible) -->
     <div id="menuBar">
-      <button id="dzogchenBtn">Dzogchen Freeform</button>
       <button id="mahaBtn">Mahamudra Pointing-Out</button>
       <button id="trekchoBtn">Trekchö Cutting-Through</button>
+      <button id="dzogchenBtn">Dzogchen Freeform</button>
     </div>
 
     <div id="card">
@@ -457,12 +457,12 @@
 
     /* fade helpers */
     function fadeTextFast(newText){
-      elContent.style.transition = 'opacity 450ms ease';
+      elContent.style.transition = 'opacity 800ms ease';
       elContent.style.opacity = '0';
       setTimeout(()=>{
         elContent.textContent = newText;
         elContent.style.opacity = '1';
-      }, 450);
+      }, 800);
     }
 
     function fadeTextSlow(newText){
