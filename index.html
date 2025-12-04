@@ -382,11 +382,11 @@
     let soundEnabled = false;
     let schumannNodes = null;
 
-    const SOUND_ICON_ON =
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='5 9 9 9 12 6 12 18 9 15 5 15 5 9'/%3E%3Cpath d='M16 10c1.333 1.333 1.333 2.667 0 4'/%3E%3Cpath d='M18.5 7.5c2.5 2.5 2.5 6.5 0 9'/%3E%3C/svg%3E";
-
     const SOUND_ICON_OFF =
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='5 9 9 9 12 6 12 18 9 15 5 15 5 9'/%3E%3Cline x1='16' y1='9' x2='20' y2='13'/%3E%3Cline x1='20' y1='9' x2='16' y2='13'/%3E%3C/svg%3E";
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2.1' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='1.6'/%3E%3Cline x1='16' y1='9' x2='20' y2='13'/%3E%3Cline x1='20' y1='9' x2='16' y2='13'/%3E%3C/svg%3E";
+
+const SOUND_ICON_ON =
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='2.1' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='1.6'/%3E%3Cpath d='M15 12c1 .5 1 .5 2 0'/%3E%3C/svg%3E";
 
     function ensureAudioCtx(){
       if(!audioCtx){
