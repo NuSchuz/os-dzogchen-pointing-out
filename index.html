@@ -452,14 +452,10 @@ const SOUND_ICON_ON =
       osc.stop(now + 0.6);
     }
 
-    function playPhaseTone(phase){
-      if(!soundEnabled) return;
-      // Dzogchen phases: 0→396, 1→417, 2→528, 3→639 Hz
-      if(phase === 0) playSolfeggio(396);
-      else if(phase === 1) playSolfeggio(417);
-      else if(phase === 2) playSolfeggio(528);
-      else if(phase === 3) playSolfeggio(639);
-    }
+    function playPhaseTone(){
+  if(!soundEnabled) return;
+  playSolfeggio(528);
+}
     /* ---------- Teaching text sets ---------- */
 
     /* Dzogchen Freeform — four phases with random variations */
