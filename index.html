@@ -466,12 +466,12 @@
     }
 
     function fadeTextSlow(newText){
-      elContent.style.transition = 'opacity 3000ms ease';
+      elContent.style.transition = 'opacity 1500ms ease';
       elContent.style.opacity = '0';
       setTimeout(()=>{
         elContent.textContent = newText;
         elContent.style.opacity = '1';
-      }, 3000);
+      }, 1500);
     }
 
     /* ---------- menu toggle ---------- */
