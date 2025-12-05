@@ -391,7 +391,7 @@
     function playChime() {
       if (!soundEnabled) return;
     
-      ensureAudioContext();
+      ensureAudioCtx();
     
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
