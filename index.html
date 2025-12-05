@@ -1018,7 +1018,15 @@
     });
 
     /* ---------- interactions ---------- */
-
+    function fade(newText){
+      elContent.style.transition = 'opacity 1500ms ease';
+      elContent.style.opacity = '0';
+      setTimeout(()=>{
+        elContent.textContent = newText;
+        elContent.style.opacity = '1';
+      }, 1500);
+    }
+    
     function step(){
       if(stepBtn.disabled || !teachingMode) return;
 
@@ -1214,15 +1222,6 @@
       document.querySelectorAll(".mode-extra-button").forEach(btn => btn.remove());
     }
 
-    function fade(newText){
-      elContent.style.transition = 'opacity 1500ms ease';
-      elContent.style.opacity = '0';
-      setTimeout(()=>{
-        elContent.textContent = newText;
-        elContent.style.opacity = '1';
-      }, 1500);
-    }
-    
     rushenBtn.addEventListener('click', () => {
       teachingMode = "rushen";
       playChime();
