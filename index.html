@@ -397,15 +397,15 @@
       const gain = audioCtx.createGain();
     
       osc.type = "sine";
-      osc.frequency.setValueAtTime(560, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(528, audioCtx.currentTime);
     
       gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 2.5);
+      gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 3.5);
     
       osc.connect(gain).connect(audioCtx.destination);
     
       osc.start();
-      osc.stop(audioCtx.currentTime + 2.6);
+      osc.stop(audioCtx.currentTime + 3.6);
     }
 
     function startSchumann(){
@@ -736,8 +736,8 @@
     }
 
     /* fade helpers */
-    function fadeTextFast(newText){ // Dzogchen: 800ms
-      elContent.style.transition = 'opacity 800ms ease';
+    function fadeTextFast(newText){ // Dzogchen: 1000ms
+      elContent.style.transition = 'opacity 1000ms ease';
       elContent.style.opacity = '0';
       setTimeout(()=>{
         elContent.textContent = newText;
@@ -1004,6 +1004,7 @@
       }
 
       anchorText.textContent = pickAnchor();
+      playChime();
       anchorText.style.opacity = '1';
 
       anchorTimeout = setTimeout(()=>{
