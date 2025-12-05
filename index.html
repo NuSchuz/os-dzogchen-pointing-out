@@ -21,9 +21,9 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: linear-gradient(
-        135deg,
-        #000000 0%,
-        #0b0b10 50%,
+        45deg,       /* ← this makes the highlight sit in the TOP-LEFT */
+        #0b0b10 0%,
+        #000000 50%,
         #000000 100%
       );
       color: var(--fg);
@@ -885,7 +885,7 @@
       mahaIndex = 0;
       clearModeExtras();
       showMahamudraControls();
-      fadeTextSlow('Mahamudra Pointing-Out — click the left dot (●) to begin.');
+      fadeTextSlow('Mahamudra Pointing-Out — click the dot (●) to begin.');
       collapseMenu();
       playChime();
     }
@@ -895,7 +895,7 @@
       dzPOIndex = 0;
       clearModeExtras();
       showDzogchenPOControls();
-      fadeTextSlow('Dzogchen Pointing-Out — click the left dot (●) to begin.');
+      fadeTextSlow('Dzogchen Pointing-Out — click the dot (●) to begin.');
       collapseMenu();
       playChime();
     }
@@ -905,7 +905,7 @@
       trekIndex = 0;
       clearModeExtras();
       showTrekchoControls();
-      fadeTextSlow('Trekchö — click the left dot (●) to begin.');
+      fadeTextSlow('Trekchö — click the dot (●) to begin.');
       collapseMenu();
       playChime();
     }
