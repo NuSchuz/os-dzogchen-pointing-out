@@ -979,24 +979,6 @@
       playChime();
     }
 
-    rushenBtn.addEventListener('click', () => {
-      teachingMode = "rushen";
-      playChime();
-      collapseMenu();
-    
-      stepBtn.disabled = true;   // locked until method chosen
-      cycleBtn.disabled = true;
-      anchorBtn.disabled = true;
-    
-      currentRushenIndex = 0;
-      currentRushenPath = null;
-    
-      fade(rushenIntro[currentRushenIndex]);
-      currentRushenIndex++;
-    
-      showRushenMethodButtons();
-    });
-    
     dzogchenBtn.addEventListener('click', setModeDzogchen);
     mahaBtn.addEventListener('click', setModeMahamudra);
     trekchoBtn.addEventListener('click', setModeTrekcho);
@@ -1231,6 +1213,24 @@
     function removeRushenMethodButtons() {
       document.querySelectorAll(".mode-extra-button").forEach(btn => btn.remove());
     }
+
+    rushenBtn.addEventListener('click', () => {
+      teachingMode = "rushen";
+      playChime();
+      collapseMenu();
+    
+      stepBtn.disabled = true;   // locked until method chosen
+      cycleBtn.disabled = true;
+      anchorBtn.disabled = true;
+    
+      currentRushenIndex = 0;
+      currentRushenPath = null;
+    
+      fade(rushenIntro[currentRushenIndex]);
+      currentRushenIndex++;
+    
+      showRushenMethodButtons();
+    });
     
     /* ---------- wiring ---------- */
     stepBtn.addEventListener('click', step);
