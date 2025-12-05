@@ -127,6 +127,24 @@
       transform:translateY(-1px);
     }
 
+    .mode-extra-button {
+      background: var(--btn);
+      color: var(--fg);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin: 10px 0;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 100%;
+      transition: background .15s, transform .15s;
+    }
+    
+    .mode-extra-button:hover {
+      background: var(--btnHover);
+      transform: translateY(-1px);
+    }
+
     /* Card: floating, gradient, soft shadow */
     #card{
       background:linear-gradient(180deg, var(--cardTop), var(--cardBottom));
@@ -367,9 +385,10 @@
 
     <!-- Teaching selector: Trekchö, Mahamudra, Freeform (Freeform last) -->
     <div id="menuBar">
-      <button id="trekchoBtn">Trekchö Cutting-Through</button>
+      <button id="rushenBtn">Inner Mind Rushen*</button>
       <button id="mahaBtn">Mahamudra Pointing-Out</button>
-      <button id="dzPOBtn">Dzogchen Pointing-Out</button>
+      <button id="dzpoBtn">Dzogchen Pointing-Out</button>
+      <button id="trekchoBtn">Trekchö</button>
       <button id="dzogchenBtn">Dzogchen Freeform</button>
     </div>
 
@@ -504,6 +523,52 @@
       //else if(phase === 3) /*playSolfeggio(639);*/
     }
 
+    // ---------------------------
+    // INNER MIND RUSHEN MODULE
+    // ---------------------------
+    
+    const rushenIntro = [
+      "Inner Mind Rushen is a universal preliminary practice found across spiritual traditions.",
+      "It is not exotic or secret. It reveals what is already present beneath habit.",
+      "Sit in a stable, comfortable posture. Spine straight but relaxed. Shoulders soft. Jaw loose. Gaze open.",
+      "Let verbal activity quiet. Do not suppress thoughts; let them drift without engagement.",
+      "This practice reveals the nature of mind by searching where experience is occurring.",
+      "There are two methods. Choose the approach that feels natural."
+    ];
+    
+    const rushenWide = [
+      "Let attention spread wide. Not focused, not narrow, not aimed.",
+      "Allow sensations, sounds, and thoughts to arise naturally within a wide, effortless field.",
+      "As attention relaxes, the background that holds all experience becomes more evident.",
+      "Awareness is not created. It is already here.",
+      "This openness has been described in many traditions: early Buddhism, Vedanta, Sufi witnessing, Christian contemplative prayer, Taoist non-striving, indigenous sky-mind practices, etc.",
+      "Different words, same recognition.",
+      "Rest without modifying anything. Let the natural clarity show itself."
+    ];
+    
+    const rushenImagery = [
+      "Hold a simple mental image lightly: a stone, a cup, a leaf — distinct enough to sense, but without strain.",
+      "Ask gently: 'Where is this occurring?'",
+      "Do not think the answer. Let attention move toward the felt location of the image.",
+      "Search the body: head, throat, chest, belly, spine, hands, feet. Notice where the image seems to be happening.",
+      "Then search outward: in front, behind, above, below, and to both sides.",
+      "Let attention feel into the 'where' — as if sensing something closer than thought or sensation.",
+      "Notice how the image dissolves or slips away.",
+      "Attend to what the image dissolved into. That vanishing reveals something important."
+    ];
+    
+    const rushenResolve = [
+      "If mind cannot be found in the body or in space, notice what remains.",
+      "A knowing that does not come from a location.",
+      "A clarity closer than breath.",
+      "A presence that has been here in every moment of your life.",
+      "This is why so many traditions describe awakening as recognition rather than attainment.",
+      "Open, clear, locationless awareness is not created. It was never absent.",
+      "Rest naturally in this unconstructed openness.",
+      "Do not try to hold it. Do not describe it. Do not chase it.",
+      "Let the natural state show itself without interference."
+    ];
+    
     /* ---------- Dzogchen Freeform pools ---------- */
     const phenomena = [
       "Notice the next thought that appears.","Notice the next emotion that surfaces.","Notice any bodily sensation you can feel.",
@@ -911,6 +976,24 @@
       playChime();
     }
 
+    rushenBtn.addEventListener('click', () => {
+      teachingMode = "rushen";
+      playChime();
+      collapseMenu();
+    
+      stepBtn.disabled = true;   // locked until method chosen
+      cycleBtn.disabled = true;
+      anchorBtn.disabled = true;
+    
+      currentRushenIndex = 0;
+      currentRushenPath = null;
+    
+      fade(rushenIntro[currentRushenIndex]);
+      currentRushenIndex++;
+    
+      showRushenMethodButtons();
+    });
+    
     dzogchenBtn.addEventListener('click', setModeDzogchen);
     mahaBtn.addEventListener('click', setModeMahamudra);
     trekchoBtn.addEventListener('click', setModeTrekcho);
@@ -931,6 +1014,10 @@
         infoTitle.textContent = 'Dzogchen Freeform';
         infoBody.innerHTML = "<p>Dzogchen Freeform steps through four phases with the left dot: <em>phenomenon → space → revelation → rest</em>. Each iteration invites you to notice a concrete appearance, then the space that holds it, then the nature of that openness, and finally a short period of resting.</p><p>When one full iteration is complete, the left dot disables and the right dot becomes available to start the next iteration. At that same moment an anchor (a short lineage quote) becomes available — press it once to receive a pointer that fades in and out over 30 seconds.</p><p>These are pointers only, not a substitute for direct instruction with a qualified teacher.</p>";
       }
+      else if (teachingMode === "rushen") {
+        infoText =
+          "Inner Mind Rushen* is a traditional preliminary practice used to clear habitual obscurations and prepare attention for recognizing the nature of mind. It appears in different forms across many traditions. Recommended as the first module for new users. Can be revisited as often as desired.";
+      }
     }
 
     infoBtn.addEventListener('click', ()=>{
@@ -950,6 +1037,46 @@
     function step(){
       if(stepBtn.disabled || !teachingMode) return;
 
+      if (teachingMode === "rushen") {
+        // Intro phase before branching
+        if (!currentRushenPath) {
+          if (currentRushenIndex < rushenIntro.length) {
+            fade(rushenIntro[currentRushenIndex]);
+            currentRushenIndex++;
+            return;
+          } else {
+            return; // waiting for method choice
+          }
+        }
+      
+        // After method selection
+        let arr = currentRushenPath === "wide" ? rushenWide : rushenImagery;
+      
+        if (currentRushenIndex < arr.length) {
+          fade(arr[currentRushenIndex]);
+          currentRushenIndex++;
+          return;
+        }
+      
+        // Resolution phase
+        let offset = currentRushenIndex - arr.length;
+        if (offset < rushenResolve.length) {
+          fade(rushenResolve[offset]);
+          currentRushenIndex++;
+          return;
+        }
+      
+        // Completed module
+        playChime();
+        fade("Inner Mind Rushen complete.");
+        expandMenu();
+        stepBtn.disabled = true;
+        cycleBtn.disabled = true;
+        anchorBtn.disabled = true;
+        teachingMode = null;
+        return;
+      }
+      
       // Mahamudra mode
       if(teachingMode === 'mahamudra'){
         if(mahaIndex < mahamudraSteps.length){
@@ -1067,6 +1194,45 @@
       playChime();
     }
 
+    //Rushen helpers
+    let currentRushenIndex = 0;
+    let currentRushenPath = null; // "wide" or "imagery"
+    
+    function showRushenMethodButtons() {
+      const card = document.getElementById("card");
+    
+      const wideBtn = document.createElement("button");
+      wideBtn.textContent = "Wide Attention Method";
+      wideBtn.className = "mode-extra-button";
+    
+      const imagBtn = document.createElement("button");
+      imagBtn.textContent = "Imagery Search Method";
+      imagBtn.className = "mode-extra-button";
+    
+      wideBtn.onclick = () => {
+        playChime();
+        currentRushenPath = "wide";
+        removeRushenMethodButtons();
+        stepBtn.disabled = false;
+        fade("Wide Attention — click the dot to continue.");
+      };
+    
+      imagBtn.onclick = () => {
+        playChime();
+        currentRushenPath = "imagery";
+        removeRushenMethodButtons();
+        stepBtn.disabled = false;
+        fade("Imagery Search — click the dot to continue.");
+      };
+    
+      card.appendChild(wideBtn);
+      card.appendChild(imagBtn);
+    }
+    
+    function removeRushenMethodButtons() {
+      document.querySelectorAll(".mode-extra-button").forEach(btn => btn.remove());
+    }
+    
     /* ---------- wiring ---------- */
     stepBtn.addEventListener('click', step);
     cycleBtn.addEventListener('click', cycle);
