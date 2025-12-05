@@ -16,12 +16,16 @@
       --radius:14px;
     }
 
-    html,body{height:100%;margin:0}
-
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* prevents vertical scrolling entirely */
+    }
+    
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     
-      /* Subtle top-left glow gradient */
       background: linear-gradient(
         135deg,
         #0b0b12 0%,
@@ -31,17 +35,12 @@
     
       color: var(--fg);
     
-      /* Layout refinement */
       display: flex;
       justify-content: center;
       align-items: flex-start;
     
-      /* Moves the UI upward (but not glued to top) */
-      padding-top: 50px;
-      padding-bottom: 20px;
-    
-      min-height: 100vh;
-      margin: 0;
+      padding-top: 40px;   /* slightly reduced for better fit */
+      padding-bottom: 0;   /* unnecessary with overflow hidden */
     }
     
     #container{
