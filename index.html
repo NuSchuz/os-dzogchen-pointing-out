@@ -469,10 +469,10 @@
     function playPhaseTone(phase){
       if(!soundEnabled) return;
       // Dzogchen phases: 0→396, 1→417, 2→528, 3→639 Hz
-      if(phase === 0) /*playSolfeggio(396);*/
-      else if(phase === 1) /*playSolfeggio(417);*/
-      else if(phase === 2) /*playSolfeggio(528);*/
-      else if(phase === 3) /*playSolfeggio(639);*/
+      //if(phase === 0) /*playSolfeggio(396);*/
+      //else if(phase === 1) /*playSolfeggio(417);*/
+      //else if(phase === 2) /*playSolfeggio(528);*/
+      //else if(phase === 3) /*playSolfeggio(639);*/
     }
 
     /* ---------- Dzogchen Freeform pools ---------- */
@@ -768,10 +768,10 @@
 
       if(soundEnabled){
         if(teachingMode === 'mahamudra' || teachingMode === 'trekcho'){
-          /*startSchumann();*/
+          //startSchumann();
         }
       } else {
-        /*stopSchumann();*/
+        //stopSchumann();
       }
       updateSoundUI();
     });
@@ -814,7 +814,7 @@
       anchorBtn.disabled = true;
       infoBtn.style.display = 'inline-block';
       soundBtn.style.display = 'inline-block';
-      if(soundEnabled) /*startSchumann();*/
+      //if(soundEnabled) /*startSchumann();*/
     }
 
     function showTrekchoControls(){
@@ -826,7 +826,7 @@
       anchorBtn.disabled = true;
       infoBtn.style.display = 'inline-block';
       soundBtn.style.display = 'inline-block';
-      if(soundEnabled) /*startSchumann();*/
+      //if(soundEnabled) /*startSchumann();*/
     }
 
     function showDzogchenPOControls(){
@@ -845,7 +845,7 @@
       teachingMode = 'dzogchen';
       phase = 0;
       clearModeExtras();
-      /*stopSchumann();*/ // no continuous hum in Dzogchen
+      ///*stopSchumann();*/ // no continuous hum in Dzogchen
       showDzogchenControls();
       fadeTextFast('Click the left dot (●) to step through the first iteration.');
       collapseMenu();
