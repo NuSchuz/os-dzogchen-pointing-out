@@ -1046,7 +1046,7 @@
     }
     
     function step(){
-      if(stepBtn.disabled || !teachingMode) return;
+      if(!teachingMode) return;
 
       if (teachingMode === "rushen") {
         // Intro phase before branching
@@ -1218,13 +1218,16 @@
     
       wideBtn.onclick = () => {
         //playChime();
+        
         teachingMode = "rushen";
         currentRushenPath = "wide";
         currentRushenIndex = 0;
         removeRushenMethodButtons();
+        
+        stepBtn.style.display = "inline-block";
         stepBtn.disabled = false;
-        stepBtn.style.opacity = "1";
-        stepBtn.style.pointerEvents = "auto";
+        //stepBtn.style.opacity = "1";
+        //stepBtn.style.pointerEvents = "auto";
         
         //dot.style.opacity = "1";
         //textArea.style.opacity = "1";
@@ -1234,13 +1237,16 @@
     
       imagBtn.onclick = () => {
         //playChime();
+        
         teachingMode = "rushen";
         currentRushenPath = "imagery";
         currentRushenIndex = 0;
         removeRushenMethodButtons();
+        
+        stepBtn.style.display = "block";
         stepBtn.disabled = false;
-        stepBtn.style.opacity = "1";
-        stepBtn.style.pointerEvents = "auto";
+        //stepBtn.style.opacity = "1";
+        //stepBtn.style.pointerEvents = "auto";
         
         //dot.style.opacity = "1";
         //textArea.style.opacity = "1";
