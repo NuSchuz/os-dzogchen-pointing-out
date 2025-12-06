@@ -814,6 +814,7 @@
     const infoBody = document.getElementById('infoBody');
     const closeModal = document.getElementById('closeModal');
 
+    const rushenBtn = document.getElementById('rushenBtn');
     const dzogchenBtn = document.getElementById('dzogchenBtn');
     const mahaBtn = document.getElementById('mahaBtn');
     const trekchoBtn = document.getElementById('trekchoBtn');
@@ -983,7 +984,24 @@
     mahaBtn.addEventListener('click', setModeMahamudra);
     trekchoBtn.addEventListener('click', setModeTrekcho);
     dzPOBtn.addEventListener('click', setModeDzogchenPO);
-
+    rushenBtn.addEventListener('click', () => {
+      teachingMode = "rushen";
+      playChime();
+      collapseMenu();
+    
+      stepBtn.disabled = true;   // locked until method chosen
+      cycleBtn.disabled = true;
+      anchorBtn.disabled = true;
+    
+      currentRushenIndex = 0;
+      currentRushenPath = null;
+    
+      fade(rushenIntro[currentRushenIndex]);
+      currentRushenIndex++;
+    
+      showRushenMethodButtons();
+    });
+    
     /* ---------- info modal content ---------- */
     function setInfoContent(){
       if(teachingMode === 'mahamudra'){
@@ -1222,24 +1240,6 @@
       document.querySelectorAll(".mode-extra-button").forEach(btn => btn.remove());
     }
 
-    rushenBtn.addEventListener('click', () => {
-      teachingMode = "rushen";
-      playChime();
-      collapseMenu();
-    
-      stepBtn.disabled = true;   // locked until method chosen
-      cycleBtn.disabled = true;
-      anchorBtn.disabled = true;
-    
-      currentRushenIndex = 0;
-      currentRushenPath = null;
-    
-      fade(rushenIntro[currentRushenIndex]);
-      currentRushenIndex++;
-    
-      showRushenMethodButtons();
-    });
-    
     /* ---------- wiring ---------- */
     stepBtn.addEventListener('click', step);
     cycleBtn.addEventListener('click', cycle);
