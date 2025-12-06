@@ -988,17 +988,21 @@
       teachingMode = "rushen";
       playChime();
       collapseMenu();
-    
+      clearModeExtras();
+      
       stepBtn.disabled = true;   // locked until method chosen
       cycleBtn.disabled = true;
       anchorBtn.disabled = true;
     
       currentRushenIndex = 0;
       currentRushenPath = null;
-    
+
       fade(rushenIntro[currentRushenIndex]);
+      
+      // hide dot + cycle during intro
+      document.querySelector(".controls").style.display = "none";
     
-      showRushenMethodButtons();
+      // DO NOT show method buttons yet
     });
     
     /* ---------- info modal content ---------- */
@@ -1056,7 +1060,8 @@
             currentRushenIndex++;
             return;
           } else {
-            return; // waiting for method choice
+            showRushenMethodButtons();
+            return;
           }
         }
       
@@ -1206,6 +1211,8 @@
     }
 
     function showRushenMethodButtons() {
+      removeRushenMethodButtons();
+      
       const card = document.getElementById("card");
     
       const wideBtn = document.createElement("button");
@@ -1224,10 +1231,11 @@
         currentRushenPath = "wide";
         currentRushenIndex = 0;
         removeRushenMethodButtons();
-        
+
+        document.querySelector(".controls").style.display = "flex";
         stepBtn.style.display = "inline-block";
         stepBtn.disabled = false;
-        //stepBtn.style.opacity = "1";
+        stepBtn.style.opacity = "1";
         //stepBtn.style.pointerEvents = "auto";
         
         //dot.style.opacity = "1";
@@ -1243,10 +1251,11 @@
         currentRushenPath = "imagery";
         currentRushenIndex = 0;
         removeRushenMethodButtons();
-        
-        stepBtn.style.display = "block";
+
+        document.querySelector(".controls").style.display = "flex";
+        //stepBtn.style.display = "block";
         stepBtn.disabled = false;
-        //stepBtn.style.opacity = "1";
+        stepBtn.style.opacity = "1";
         //stepBtn.style.pointerEvents = "auto";
         
         //dot.style.opacity = "1";
