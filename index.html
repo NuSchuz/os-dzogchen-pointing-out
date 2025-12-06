@@ -531,7 +531,7 @@
     // ---------------------------
     
     const rushenIntro = [
-      "Inner Mind Rushen is a preliminary practice, of which the resolution is found across spiritual traditions.",
+      "Inner Mind Rushen is a preliminary practice, whose revelation is found across spiritual traditions.",
       "It is not exotic or secret. It reveals what is already present beneath habit.",
       "Sit in a stable, comfortable posture. Spine straight but relaxed. Shoulders soft. Jaw loose. Gaze open.",
       "Let verbal activity quiet. Do not suppress thoughts; let them drift without engagement.",
@@ -1218,6 +1218,7 @@
     
       wideBtn.onclick = () => {
         playChime();
+        teachingMode = "rushen";   // <<< REQUIRED
         currentRushenPath = "wide";
         currentRushenIndex = 0;  // <<< IMPORTANT
         removeRushenMethodButtons();
@@ -1227,6 +1228,7 @@
     
       imagBtn.onclick = () => {
         playChime();
+        teachingMode = "rushen";   // <<< REQUIRED
         currentRushenPath = "imagery";
         currentRushenIndex = 0;  // <<< IMPORTANT
         removeRushenMethodButtons();
