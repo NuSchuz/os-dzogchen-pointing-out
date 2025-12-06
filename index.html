@@ -1222,9 +1222,11 @@
         currentRushenPath = "wide";
         currentRushenIndex = 0;  // <<< IMPORTANT
         removeRushenMethodButtons();
+        // MAKE SURE DOT IS VISIBLE
+        document.querySelector(".controls").style.display = "flex";
+        stepBtn.style.opacity = "1";
         stepBtn.disabled = false;
         fade("Wide Attention — click the dot to continue.");
-        stepBtn.style.opacity = "1";
       };
     
       imagBtn.onclick = () => {
@@ -1233,9 +1235,11 @@
         currentRushenPath = "imagery";
         currentRushenIndex = 0;  // <<< IMPORTANT
         removeRushenMethodButtons();
+        // MAKE SURE DOT IS VISIBLE
+        document.querySelector(".controls").style.display = "flex";
+        stepBtn.style.opacity = "1";
         stepBtn.disabled = false;
         fade("Imagery Search — click the dot to continue.");
-        stepBtn.style.opacity = "1";
       };
     
       card.appendChild(wideBtn);
@@ -1243,7 +1247,10 @@
     }
     
     function removeRushenMethodButtons() {
-      document.querySelectorAll(".mode-extra-button").forEach(btn => btn.remove());
+      const wideBtn = document.getElementById("rushenWideBtn");
+      const imagBtn = document.getElementById("rushenImagBtn");
+      if (wideBtn) wideBtn.remove();
+      if (imagBtn) imagBtn.remove();
     }
 
     /* ---------- wiring ---------- */
