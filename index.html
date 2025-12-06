@@ -1218,28 +1218,36 @@
     
       wideBtn.onclick = () => {
         //playChime();
-        teachingMode = "rushen";   // <<< REQUIRED
+        teachingMode = "rushen";
         currentRushenPath = "wide";
-        currentRushenIndex = 0;  // <<< IMPORTANT
+        currentRushenIndex = 0;
         removeRushenMethodButtons();
-        // MAKE SURE DOT IS VISIBLE
-        document.querySelector(".controls").style.display = "flex";
-        stepBtn.style.opacity = "1";
+      
+        const controls = document.querySelector(".controls");
+        controls.setAttribute("aria-hidden", "false");
+        controls.style.display = "flex";
+      
         stepBtn.disabled = false;
-        fade("Wide Attention — click the dot to continue.");
+        stepBtn.style.opacity = "1";
+      
+        fade("Wide Attention — click the dot (●) to continue.");
       };
     
       imagBtn.onclick = () => {
         //playChime();
-        teachingMode = "rushen";   // <<< REQUIRED
+        teachingMode = "rushen";
         currentRushenPath = "imagery";
-        currentRushenIndex = 0;  // <<< IMPORTANT
+        currentRushenIndex = 0;
         removeRushenMethodButtons();
-        // MAKE SURE DOT IS VISIBLE
-        document.querySelector(".controls").style.display = "flex";
-        stepBtn.style.opacity = "1";
+      
+        const controls = document.querySelector(".controls");
+        controls.setAttribute("aria-hidden", "false");
+        controls.style.display = "flex";
+      
         stepBtn.disabled = false;
-        fade("Imagery Search — click the dot to continue.");
+        stepBtn.style.opacity = "1";
+      
+        fade("Imagery Search — click the dot (●) to continue.");
       };
     
       card.appendChild(wideBtn);
