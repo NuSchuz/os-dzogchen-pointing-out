@@ -1217,23 +1217,25 @@
       imagBtn.className = "mode-extra-button";
     
       wideBtn.onclick = () => {
-        playChime();
+        //playChime();
         teachingMode = "rushen";   // <<< REQUIRED
         currentRushenPath = "wide";
         currentRushenIndex = 0;  // <<< IMPORTANT
         removeRushenMethodButtons();
         stepBtn.disabled = false;
         fade("Wide Attention — click the dot to continue.");
+        stepBtn.style.opacity = "1";
       };
     
       imagBtn.onclick = () => {
-        playChime();
+        //playChime();
         teachingMode = "rushen";   // <<< REQUIRED
         currentRushenPath = "imagery";
         currentRushenIndex = 0;  // <<< IMPORTANT
         removeRushenMethodButtons();
         stepBtn.disabled = false;
         fade("Imagery Search — click the dot to continue.");
+        stepBtn.style.opacity = "1";
       };
     
       card.appendChild(wideBtn);
