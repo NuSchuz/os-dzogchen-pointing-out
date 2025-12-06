@@ -1209,13 +1209,14 @@
       const card = document.getElementById("card");
     
       const wideBtn = document.createElement("button");
+      
       wideBtn.textContent = "Wide Attention Method";
       wideBtn.className = "mode-extra-button";
-    
+      wideBtn.id = "wideBtn";
       const imagBtn = document.createElement("button");
       imagBtn.textContent = "Imagery Search Method";
       imagBtn.className = "mode-extra-button";
-    
+      imagBtn.id = "imagBtn";
       wideBtn.onclick = () => {
         //playChime();
         
@@ -1259,8 +1260,8 @@
     }
     
     function removeRushenMethodButtons() {
-      const wideBtn = document.getElementById("rushenWideBtn");
-      const imagBtn = document.getElementById("rushenImagBtn");
+      const wideBtn = document.getElementById("wideBtn");
+      const imagBtn = document.getElementById("imagBtn");
       if (wideBtn) wideBtn.remove();
       if (imagBtn) imagBtn.remove();
     }
