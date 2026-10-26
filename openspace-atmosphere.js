@@ -15,31 +15,31 @@ function init(){
  float hash(vec3 p){p=fract(p*.1031);p+=dot(p,p.yzx+33.33);return fract((p.x+p.y)*p.z);}
  float noise(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
  float fbm(vec3 p){float v=0.,a=.52;for(int i=0;i<4;i++){v+=a*noise(p);p=p*2.03+12.13;a*=.48;}return v;}
- void main(){vec2 uv=(gl_FragCoord.xy-.5*r)/min(r.x,r.y);float time=t*.008;
- vec2 flow=vec2(sin(time*.37),cos(time*.28))*.22;
- vec3 p=vec3(uv*1.32+flow,time*.26);
+ void main(){vec2 uv=(gl_FragCoord.xy-.5*r)/min(r.x,r.y);float time=t*.22;
+ vec2 flow=vec2(sin(time*.37),cos(time*.28))*.42;
+ vec3 p=vec3(uv*1.32+flow,time*.38);
  float a=fbm(p+vec3(fbm(p*.8),fbm(p*1.12),0.)*.8);
  float b=fbm(p*1.37+vec3(3.9,2.3,2.1));
- float n=smoothstep(.29,.76,a+.12*b);
+ float n=smoothstep(.27,.68,a+.18*b);
  float center=exp(-dot(uv-vec2(-.22,-.02),uv-vec2(-.22,-.02))*1.5);
- float cloud1=pow(max(0.,n),1.9)*center;
- float cloud2=pow(max(0.,fbm(p*.88+vec3(8.3,4.2,1.7))-.31),1.3)*1.9;
+ float cloud1=pow(max(0.,n),1.5)*center;
+ float cloud2=pow(max(0.,fbm(p*.88+vec3(8.3,4.2,1.7))-.28),1.3)*2.9;
  vec3 color=vec3(.024,.036,.069);
- color+=vec3(.31,.17,.30)*cloud1*.62;
- color+=vec3(.39,.19,.13)*cloud2*.26;
- color+=vec3(.08,.13,.29)*exp(-dot(uv-vec2(.55,.20),uv-vec2(.55,.20))*2.4)*(.17+.65*b);
- color+=vec3(.15,.10,.20)*exp(-dot(uv-vec2(-.4,.56),uv-vec2(-.4,.56))*2.1)*(.22+.40*a);
+ color+=vec3(.52,.20,.33)*cloud1*1.15;
+ color+=vec3(.66,.30,.13)*cloud2*.55;
+ color+=vec3(.10,.20,.48)*exp(-dot(uv-vec2(.55,.20),uv-vec2(.55,.20))*2.4)*(.17+.90*b);
+ color+=vec3(.34,.12,.27)*exp(-dot(uv-vec2(-.4,.56),uv-vec2(-.4,.56))*2.1)*(.22+.60*a);
  color*=.92+ .08*sin(uv.y*2.3+time*.3);
  color=pow(max(color,0.),vec3(.89));gl_FragColor=vec4(color,1.);
  }`;
  function compile(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
  try { if(!gl)throw Error('WebGL unsupported'); program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,vertex));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,fragment));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);positionLoc=gl.getAttribLocation(program,'p');timeLoc=gl.getUniformLocation(program,'t');resLoc=gl.getUniformLocation(program,'r');buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);gl.enableVertexAttribArray(positionLoc);gl.vertexAttribPointer(positionLoc,2,gl.FLOAT,false,0,0); } catch(e){console.warn('OpenSpace atmosphere: static fallback',e);gl=null;canvas.style.background='radial-gradient(ellipse at 45% 48%, #372437 0%, #11182a 49%, #070b15 100%)';}
  let w=0,h=0;
- function render(ms){if(!running||!gl)return;if(document.hidden){requestAnimationFrame(render);return;}if(ms-last<55){requestAnimationFrame(render);return;}const delta=last?Math.min((ms-last)/1000,.1):0;last=ms;elapsed+=delta;
- const scale=Math.min(window.devicePixelRatio||1,1.1)*.62;
+ function render(ms){if(!running||!gl)return;if(document.hidden){requestAnimationFrame(render);return;}if(ms-last<42){requestAnimationFrame(render);return;}const delta=last?Math.min((ms-last)/1000,.1):0;last=ms;elapsed+=delta;
+ const scale=Math.min(window.devicePixelRatio||1,1.5)*.72;
  const nw=Math.max(1,Math.round(innerWidth*scale)),nh=Math.max(1,Math.round(innerHeight*scale));if(w!==nw||h!==nh){canvas.width=w=nw;canvas.height=h=nh;gl.viewport(0,0,w,h);}gl.uniform2f(resLoc,w,h);gl.uniform1f(timeLoc,elapsed);gl.drawArrays(gl.TRIANGLES,0,6);requestAnimationFrame(render);}
  if(gl){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){canvas.width= Math.max(1,Math.round(innerWidth*.5));canvas.height=Math.max(1,Math.round(innerHeight*.5));gl.viewport(0,0,canvas.width,canvas.height);gl.uniform2f(resLoc,canvas.width,canvas.height);gl.uniform1f(timeLoc,14);gl.drawArrays(gl.TRIANGLES,0,6);}else requestAnimationFrame(render);}
- const toggle=document.createElement('button');toggle.id='os-atmosphere-toggle';toggle.textContent='Atmosphere: on';toggle.setAttribute('aria-label','Toggle ambient motion');toggle.addEventListener('click',()=>{running=!running;toggle.textContent='Atmosphere: '+(running?'on':'paused');if(running&&gl){last=0;requestAnimationFrame(render);}});document.body.append(toggle);
+ const toggle=document.createElement('button');toggle.id='os-atmosphere-toggle';toggle.textContent=gl?'Pause atmosphere':'Static atmosphere';toggle.setAttribute('aria-label','Toggle ambient motion');toggle.disabled=!gl;toggle.addEventListener('click',()=>{running=!running;toggle.textContent=gl?(running?'Pause atmosphere':'Resume atmosphere'):'Static atmosphere';if(running&&gl){last=0;requestAnimationFrame(render);}});document.body.append(toggle);
  // Optional original inquiry inspired by Time, Space, Knowledge. No original V8 globals overwritten.
  const steps=[
  ['The apparent center','Notice the sense that experience is happening from somewhere.\n\nWithout moving attention away from experience, where is that somewhere?'],
